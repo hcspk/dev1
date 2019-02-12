@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BEA1B6AA-50A3-440D-973D-BFC2F0867CC9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KES_1_for_LAN</RootNamespace>
+    <AssemblyName>KES-1 for LAN</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\act_pos.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\act_pos2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\act_pos3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\connected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cont.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cont1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\home_pos.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\home_pos1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\home_pos2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\home_pos3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\krc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\krc1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\krc2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\krrobotics.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mid_pos2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mid_pos3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\start1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\stop1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\supp_pos.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\supp_pos2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\supp_pos3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xx-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xx+.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\y-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\y1-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\y2-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\yy-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\yy+.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zz-.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\zz+.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x0y0.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x0y-1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x0y-2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x0y-3.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x0y-4.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x-1y0.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x-2y0.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x-3y0.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x-4y0.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
