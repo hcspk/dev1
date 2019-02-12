@@ -11,7 +11,7 @@ using System.Media;
 using System.IO;
 
 /// <summary>
-/// ///////////////
+/// ////////////////////
 /// </summary>
 namespace KES_1_for_LAN
 {
