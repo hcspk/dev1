@@ -116,7 +116,7 @@
             this.button1.TabIndex = 57;
             this.button1.Text = "Point Teach";
             this.button1.UseVisualStyleBackColor = true;
-             // 
+            // 
             // label_bar2
             // 
             this.label_bar2.BackColor = System.Drawing.Color.DarkSlateGray;
@@ -457,7 +457,6 @@
             this.button2.TabIndex = 21;
             this.button2.Text = "send to";
             this.button2.UseVisualStyleBackColor = false;
-         
             // 
             // IP_txt1
             // 
@@ -580,7 +579,7 @@
             this.ComPort_btn.TabIndex = 20;
             this.ComPort_btn.Text = "Connect";
             this.ComPort_btn.UseVisualStyleBackColor = false;
-             // 
+            // 
             // label_tx
             // 
             this.label_tx.BackColor = System.Drawing.Color.White;
@@ -649,7 +648,6 @@
             this.label12.TabIndex = 64;
             this.label12.Text = "Warning";
             this.label12.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-           
             // 
             // label18
             // 
@@ -801,7 +799,6 @@
             this.button3.TabIndex = 66;
             this.button3.Text = "motor ON";
             this.button3.UseVisualStyleBackColor = true;
-           
             // 
             // button4
             // 
@@ -811,7 +808,6 @@
             this.button4.TabIndex = 67;
             this.button4.Text = "motor Off";
             this.button4.UseVisualStyleBackColor = true;
-           
             // 
             // button5
             // 
@@ -821,7 +817,6 @@
             this.button5.TabIndex = 68;
             this.button5.Text = "300-200";
             this.button5.UseVisualStyleBackColor = true;
-            
             // 
             // button6
             // 
@@ -840,7 +835,7 @@
             this.button7.TabIndex = 70;
             this.button7.Text = "HOME";
             this.button7.UseVisualStyleBackColor = true;
-              // 
+            // 
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(438, 766);
@@ -858,7 +853,7 @@
             this.button9.TabIndex = 72;
             this.button9.Text = "button9";
             this.button9.UseVisualStyleBackColor = true;
-             // 
+            // 
             // button10
             // 
             this.button10.Location = new System.Drawing.Point(30, 793);
@@ -876,7 +871,8 @@
             this.button11.TabIndex = 74;
             this.button11.Text = "button11";
             this.button11.UseVisualStyleBackColor = true;
-             // 
+            this.button11.Click += new System.EventHandler(this.button11_Click_1);
+            // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(101, 764);

@@ -853,73 +853,9 @@ namespace KES_1_for_LAN
 
             // ****  엡손에 데이터 날리기.
 
-            ecmd = "$Start";
-            ecmd_str = ",0";
-            Sendmsg_Lan(ecmd + ecmd_str);          // $Start 송신 -> 수신확인
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(50);
-
-
-
-            x_axis = "263";               // 매 작업마다 x축 좌표를 넣어 준다(실 좌표값 * 100).
-            ecmd = "$SetMemIOWord";
-            ecmd_str = ",11" + x_axis;    // x 좌표를 11번 mem IO 에 넣어 준다.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            y_axis = "133";               // 매 작업마다 y축 좌표를 넣어 준다(실 좌표값 * 100).
-            ecmd = "$SetMemIOWord";
-            ecmd_str = ",12" + y_axis;    // y 좌표를 12번 mem IO 에 넣어 준다.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            z_axis = "-23";               // 매 작업마다 z축 좌표를 넣어 준다(실 좌표값 * 100).
-            ecmd = "$SetMemIOWord";
-            ecmd_str = ",13" + z_axis;    // z 좌표를 13번 mem IO 에 넣어 준다.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            u_axis = "-86";               // 매 작업마다 theta 좌표를 넣어 준다(실 좌표값 * 100).
-            ecmd = "$SetMemIOWord";
-            ecmd_str = ",14" + z_axis;    // theta 좌표를 14번 mem IO 에 넣어 준다.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            ecmd = "$SetMemIO";
-            ecmd_str = ",16,0";           // x 좌표의 값이 '-' 면 mem IOdml 16번 bit를 on(1)하자.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            ecmd = "$SetMemIO";
-            ecmd_str = ",17,0";           // y 좌표의 값이 '-' 면 mem IOdml 17번 bit를 on(1)하자.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            ecmd = "$SetMemIO";
-            ecmd_str = ",18,0";           // z 좌표의 값이 '-' 면 mem IOdml 18번 bit를 on(1)하자.
-            Sendmsg_Lan(ecmd + ecmd_str); // z 좌표는 항상 '-' 이다. 
-
-            ecmd = "$SetMemIO";
-            ecmd_str = ",19,0";           // theta 좌표의 값이 '-' 면 mem IOdml 19번 bit를 on(1)하자.
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            ecmd = "$GetIO,6";             // 6번 bit는 나사공급 OK ,,  (로봇의 hard wiring 된 입력의 상태조회.). 
-            Sendmsg_Lan(ecmd);             // #GetIO,1  응답이 이와 같이 0,1로 옴.,
-            // ** -->>   #GetIO,1 로 응답되면 다음으로 넘어가고 #GetIO,0 으로 응답되면 다시 시도 하거나 다른 시도~~~
-
-            ecmd = "$GetIO,7";             // 7번 bit는 나사흡착 OK ,,  (로봇의 hard wiring 된 입력의 상태조회.). 
-            Sendmsg_Lan(ecmd);             // #GetIO,1  응답이 이와 같이 0,1로 옴.,
-            // ** -->>   #GetIO,1 로 응답되면 다음으로 넘어가고 #GetIO,0 으로 응답되면 다시 시도 하거나 다른 시도~~~
-
-            ecmd = "$GetIO,17";             // 17번 bit는 드라이버 토크발생 ,,  (로봇의 hard wiring 된 입력의 상태조회.). 
-            Sendmsg_Lan(ecmd);             // #GetIO,1  응답이 이와 같이 0,1로 옴.,
-            // ** -->>   #GetIO,1 로 응답되면 다음으로 넘어가고 #GetIO,0 으로 응답되면 다시 시도 하거나, 대기 하거나, 다른 시도~~~
-
-            ecmd = "$SetIO";
-            ecmd_str = ",6,1";             // 6번 bit는 나사흡착하라, 1->0 바꾸면 나사흡착 꺼라. (로봇의 hard wiring 된 출력의 설정.)
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            ecmd = "$SetIO";
-            ecmd_str = ",10,1";            // 10번 bit는 전동 드라이버 ON , 300 ~ 500ms 후에 끄자.. (로봇의 hard wiring 된 출력의 설정.)
-            Sendmsg_Lan(ecmd + ecmd_str);
-
-            ecmd = "$SetIO";
-            ecmd_str = ",11,1";            // 11번 bit는 전동 드라이버 OFF , 300 ~ 500ms 후에 끄자.. (로봇의 hard wiring 된 출력의 설정.)
-            Sendmsg_Lan(ecmd + ecmd_str);
+  
+            
+            
 
 
 
@@ -932,221 +868,30 @@ namespace KES_1_for_LAN
 
 
 
-            /*  *** 이 아래 부분 주석으로 된 부분은 지우지 말기... 나중에 참고하애 함...
-            ecmd = "$SetMotorsOn,1";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$SetMotorsOn, 1");
-
-            ecmd = "$Execute,\"Power Low\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Power High\"");
-
-            speed = "10";
-            ecmd = "$Execute,\"Speed " + speed + "\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Speed " + speed + "\"");
-
-            ecmd = "$Execute,\"Jump Home1\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Jump Home1\"");
-
-            ecmd = "$Execute,\"Jump P0\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Jump P0\"");
-
-            speed = "30";
-            ecmd = "$Execute,\"Speed " + speed + "\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Speed " + speed + "\"");
-
-            ecmd = "$Execute,\"Jump Home1\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Jump Home1\"");
-
-            ecmd = "$Execute,\"Jump P0\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);
-            insert_listbox_cmd("$Execute,\"Jump P0\"");
-                                                    
-            Start_btn.Enabled = true;
-            #########################################################################################################################################
-                        //============================================================================ 불량 시간을 로봇에 전송하는 부분
-                        double NGTimeX = NGTime * 10;
-                        //   SPort.Write("out " + NGTimeX + "\r\n");
-
-                    wait_int80:
-                        if (strReceive == "INT8" || task != "norm")
-                        {
-                        }
-                        else
-                        {
-                            Console.WriteLine("INT80 기다리는 중");
-                            Thread.Sleep(100);
-                            goto wait_int80;
-                        }
-
-                        tar_val = Target - Current + 1;
-
-                        //====================================================== 이 부분부터 반복을 시작하면서 작업을 시키는 루프
-                        while (Current <= Target && task != "stop")  //rob_act == "norm") 
-                        {
-                            //   SPort.Write("out " + Current + "\r\n");
-                            Console.WriteLine("out " + Current);
-                            Thread.Sleep(100);
-                            //   SPort.Write("bit9 1" + "\r\n");          // ##번 포인트를 실하기 위해 로봇은 오타케로 가라!!.
-
-                            curr_val = (Current - (Target - tar_val)); // 프로그래스바 계산을 위해, 이렇게 나눠서 계산해야 하더라,
-                            curr_val = curr_val / tar_val;           // 프로그래스바 계산을 위해, 이렇게 나눠서 계산해야 하더라,
-                            curr_val = curr_val * 100;               // 프로그래스바 계산을 위해, 이렇게 나눠서 계산해야 하더라,
-                            int pr_val = Convert.ToInt32(curr_val);
-                            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.supp_pos3;
-
-                        wait_int31:                                  // 드라이버 가동 시그널 1번째 기다림. ~~  
-                            if (strReceive == "INT3")                // INT3 = 드라이버를 ON 하였다는 신호
-                            {
-                                strReceive = "INT";
-                                //   SPort.Write("bit9 0" + "\r\n");
-                            }
-                            else
-                            {
-                                if (task != "stop") //rob_act == "norm")
-                                {
-                                    Console.WriteLine("INT3-1 기다리는 중");
-                                    Thread.Sleep(50);
-                                    goto wait_int31;
-                                }
-                            }
-                            Current_txt.Text = Current.ToString();
-                            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.mid_pos3;
-
-                        wait_int32:                                 // 드라이버 가동 시그널 2번째 기다림. ~~  
-                            Thread actt_thread = new Thread(new ThreadStart(delegate() // 체결시간 체크 thread 생성
-                            {
-                                ActtimeCalc(10);                    // 불량판정 초단위 ....<<- INT4가 입력되면 체결시간 멈춤.
-                            }));
-                            if (strReceive == "INT3")               // INT3 = 드라이버를 ON 하였다는 신호
-                            {
-                                actt_thread.Start();                // thread 실행하여 작업 시작
-                            }
-                            else
-                            {
-                                if (task != "stop") //rob_act == "norm")
-                                {
-                                    Console.WriteLine("INT3-2 기다리는 중");
-                                    Thread.Sleep(100);
-                                    goto wait_int32;
-                                }
-                            }
-                            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.act_pos3;
-
-                            if (Current == Target)
-                            {
-                                //   SPort.Write("bit11 1" + "\r\n");
-                            }
 
 
-                        wait_int8:
-                            if (strReceive == "INT8" || strReceive == "INT2") // INT8 = 1포인트 작업을 완료, INT2 = 불량 발생 하였다는 신호
-                            {
-                                if (strReceive == "INT8")
-                                {
-                                    Current += 1;
-                                    Console.WriteLine("Operation_Task// " + Current + " 번 포인트 완료");
-                                }
-                                if (strReceive == "INT2")
-                                {
-                                    NGPoint += 1;
-                                    NGPoint_txt.Text = NGPoint.ToString();
-                                    listBox.Items.Insert(0, " #### NG Point: " + Current);
-                                    Console.WriteLine("NG Point: " + Current);
-                                    MessageBox.Show("NG Point: " + Current + "// 뷸량나사를 제거한 후 재시작버튼을 눌러 주세요!");
-                                }
-
-                            }
-                            else
-                            {
-                                if (task != "stop") //rob_act == "norm")
-                                {
-                                    Console.WriteLine("INT8(ok) or INT2(ng) 기다리는 중");
-                                    Thread.Sleep(200);
-                                    goto wait_int8;
-                                }
-                            }
-                            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.mid_pos3;
-                            actt_thread.Interrupt();                 // actt_thread 쓰레드 강제종료(2018 11 07)
-                            actt_thread.Abort();                     // actt_thread 쓰레드 강제종료(2018 11 07)
-                            strReceive = "INT";
-                            progressBar1.Value = pr_val;
-                        }
-                        // <<<<<<<<===============------------------------------- 이 부분까지가 루프(while)를 형성하였다.
-
-                        rob_stat = "finish";
-                        task = "stop";
-                        // SPort.Write("bit11 1" + "\r\n");
-
-                        int try_in9 = 0;
-                    wait_in9:
-                        //   SPort.Write("in1?" + "\r\n");
-                        Thread.Sleep(200);
-                        string data = strReceive;
-
-                        label2.Text = data;
-                        if (data == "0")
-                        {
-                            Console.WriteLine("data " + data + " Robot at HOME1");
-                        }
-                        else if (rob_start == "fail")
-                        {
-                        }
-                        else
-                        {
-                            Console.WriteLine("IN9 기다리는 중");
-                            Thread.Sleep(200);
-                            try_in9 += 1;
-                            if (try_in9 < 301)
-                            {
-                                goto wait_in9;
-                            }
-
-                        }
-                        //   SPort.Write("bit11 0" + "\r\n");
-                        pictureBox1.Image = KES_1_for_LAN.Properties.Resources.home_pos3;
 
 
-                        if (Current == 10000)
-                        {
-                            if (rob_start == "fail")
-                            {
-                                MessageBox.Show("로봇이 Ready 상태가 아니어서 작업을 시작하지 못하였습니다. Reset을 눌러주세요. ");
-                            }
-                            else
-                            {
-                                listBox.Items.Insert(0, " 로봇이 기동되지 않아 작업을 종료합니다.!! Error Code: Z007");
-                                MessageBox.Show("로봇이 기동되지 않아 작업을 종료합니다.!! Error Code: Z007");
-                            }
-                        }
-                        else if (try_in9 > 299)
-                        {
-                            listBox.Items.Insert(0, " 작업을 종료하였으나 로봇이 홈으로 복귀하지 못하였습니다.!! Error Code: Z008");
-                            MessageBox.Show("작업을 종료하였으나 로봇이 홈으로 복귀하지 못하였습니다. RESET를 눌러 모든설정 재설정을 실행 하시기 바랍니다.");
-                        }
-                        else
-                        {
-                            listBox.Items.Insert(0, " 작업을 종료하였습니다.!! 불량포인트: " + NGPoint + "개");
-                            MessageBox.Show("작업을 종료하였습니다.!! 불량포인트: " + NGPoint + "개");
-                        }
-                        Start_btn.Enabled = true;
-                        Current_txt.Text = 0.ToString();
-             ###########################################################################################################################################
-                         */
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
 
         }
 
@@ -1277,5 +1022,9 @@ namespace KES_1_for_LAN
 
         #endregion
 
+        private void button11_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
