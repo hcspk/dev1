@@ -744,6 +744,15 @@ namespace KES_1_for_LAN
             // =======================>>>>>>>>>>   기동조건이 만족하여 실제 기동을 시작하자.  ==================================================//
 
             // ****  엡손에 데이터 날리기.
+
+            ecmd = "$Start";
+            ecmd_str = ",0";
+            Sendmsg_Lan(ecmd + ecmd_str);          // $Start 송신 -> 수신확인
+            send_N_check(5);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(50);
+
+
+
             x_axis = "263";               // 매 작업마다 x축 좌표를 넣어 준다(실 좌표값 * 100).
             ecmd = "$SetMemIOWord";
             ecmd_str = ",11" + x_axis;    // x 좌표를 11번 mem IO 에 넣어 준다.
