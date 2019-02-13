@@ -11,15 +11,16 @@ using System.Media;
 using System.IO;
 
 /// <summary>
-/// /////////////////////////
+/// ////////////////////
 /// </summary>
 namespace KES_1_for_LAN
 {
     public partial class Form1 : Form
     {
+        #region 상수
         delegate void SetTextCallback(string Text);
         DateTime startCalcTime = DateTime.Now;
-       
+
         //========================== UI가 사용하는 변수들 
         int Target = 0;               // 목표값
         int Current = 0;              // 현재 값
@@ -68,14 +69,39 @@ namespace KES_1_for_LAN
         string z_axis = "";
         string u_axis = "";
 
-
-
+        #endregion
+        
         public Form1()
         {
             InitializeComponent();
 
+            this.Load += Form1_Load;
+
+            this.ComPort_btn.Click += ComPort_btn_Click;
+            this.Start_btn.Click += Start_btn_Click;
+            this.Reset_btn.Click += Reset_btn_Click;
+            this.Stop_btn.Click += Stop_btn_Click;
+            this.Cont_btn.Click += Cont_btn_Click;
+            this.Pause_btn.Click += Pause_btn_Click;
+
+            this.button1.Click += Button1_Click;
+            this.button2.Click += Button2_Click;
+            this.button3.Click += this.button3_Click;
+            this.button4.Click += this.button4_Click;
+            this.button5.Click += this.button5_Click;
+            this.button6.Click += this.button6_Click;
+            this.button7.Click += this.button7_Click;
+            this.button8.Click += this.button8_Click;
+            this.button9.Click += this.button9_Click;
+            this.button10.Click += this.button10_Click;
+            this.button11.Click += this.button11_Click;
+
+            this.label12.Click += this.label12_Click;
+
         }
-        
+
+
+        #region 이벤트
         private void Form1_Load(object sender, EventArgs e)
         {
             Target_txt.Text = Target.ToString();
@@ -109,72 +135,23 @@ namespace KES_1_for_LAN
             lbl_led_error.BackColor = Color.Empty;
 
         }
-        private void init_load(int intval)
-        {
-            
-            lbl_led_auto.BackColor = Color.Empty;
-            lbl_led_ready.BackColor = Color.Empty;
-            lbl_led_run.BackColor = Color.Empty;
-            lbl_led_paused.BackColor = Color.Empty;
-            lbl_led_warning.BackColor = Color.Empty;
-            lbl_led_serror.BackColor = Color.Empty;
-            lbl_led_safty.BackColor = Color.Empty;
-            lbl_led_estop.BackColor = Color.Empty;
-            lbl_led_error.BackColor = Color.Empty;
-            
-            lbl_led_auto.BackColor = Color.GreenYellow;
-            Thread.Sleep(intval);
-            lbl_led_auto.BackColor = Color.Empty;
-            lbl_led_ready.BackColor = Color.GreenYellow;
-            Thread.Sleep(intval);
-            lbl_led_ready.BackColor = Color.Empty;
-            lbl_led_run.BackColor = Color.GreenYellow;
-            Thread.Sleep(intval);
-            lbl_led_run.BackColor = Color.Empty;
-            lbl_led_paused.BackColor = Color.Yellow;
-            Thread.Sleep(intval);
-            lbl_led_paused.BackColor = Color.Empty;
-            lbl_led_warning.BackColor = Color.Red;
-            Thread.Sleep(intval);
-            lbl_led_warning.BackColor = Color.Empty;
-            lbl_led_serror.BackColor = Color.Red;
-            Thread.Sleep(intval);
-            lbl_led_serror.BackColor = Color.Empty;
-            lbl_led_safty.BackColor = Color.Yellow;
-            Thread.Sleep(intval);
-            lbl_led_safty.BackColor = Color.Empty;
-            lbl_led_estop.BackColor = Color.Red;
-            Thread.Sleep(intval);
-            lbl_led_estop.BackColor = Color.Empty;
-            lbl_led_error.BackColor = Color.Red;
-            Thread.Sleep(intval);
-            lbl_led_error.BackColor = Color.Empty;
-
-            Thread Status_thread = new Thread(new ThreadStart(delegate () // 전체 작업용 thread2 생성
-            {
-                Robot_Status(500);               // 숫자는 인터벌.
-            }));
-            Status_thread.Start();               // thread 실행하여 병렬작업 시작  
-
-        }
-
 
         private void ComPort_btn_Click(object sender, EventArgs e) // LAN 포트 연결 / 해제
         {
             ip = IP_txt1.Text;
             port = int.Parse(textBox2.Text);
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            
-            Thread anytime_thread = new Thread(new ThreadStart(delegate() // thread 생성
+
+            Thread anytime_thread = new Thread(new ThreadStart(delegate () // thread 생성
             {
                 anytime_run(1000);                         // ms단위. <<- 콘넥션되면 anytime_run이 항상 가동됨.
             }));
-            Thread anyread_thread = new Thread(new ThreadStart(delegate() // thread 생성
+            Thread anyread_thread = new Thread(new ThreadStart(delegate () // thread 생성
             {
                 read_buff();
                 //anytime_read(1000);                        // ms단위. <<- 콘넥션되면 anytime_read이 항상 가동됨.
             }));
-            
+
             if (ComPort_btn.Text == "Connect")
             {
                 sock_stat = "normal";
@@ -186,9 +163,9 @@ namespace KES_1_for_LAN
                     anytime_thread.Start();
                     anyread_thread.Start();
                     any_stat = "run";
-                                        
+
                     int login_try = 0;                     //  로그인을 시도한다.
-                login_try_loop:
+                    login_try_loop:
                     Sendmsg_Lan("$Login");                 //<<------ 로그인 ID -> if Success : #Login,0
                     Console.WriteLine(lan_read);
                     if (lan_read == "#Login,0\r\n")        //  "$Login" 에 대한 응답(\r\n 은 종료문자) 
@@ -199,7 +176,8 @@ namespace KES_1_for_LAN
                         label_conn.Image = KES_1_for_LAN.Properties.Resources.connected;
 
                         Thread initload_thread = new Thread(new ThreadStart(delegate () // 전체 작업용 thread2 생성
-                        {   init_load(50);               // 숫자는 인터벌.
+                        {
+                            init_load(50);               // 숫자는 인터벌.
                         }));
                         initload_thread.Start();          // thread 실행하여 병렬작업 시작
                     }
@@ -245,7 +223,7 @@ namespace KES_1_for_LAN
                     Console.WriteLine("sock.Connected == i dont know");
                 }
                 Thread.Sleep(500);
-                
+
                 label_tx.BackColor = Color.White;
                 label_rx.BackColor = Color.White;
                 label_ex.BackColor = Color.White;
@@ -254,14 +232,14 @@ namespace KES_1_for_LAN
                 ComPort_btn.Text = "Connect";
             }
         }
-        
-        private void button2_Click_1(object sender, EventArgs e)
+
+        private void Button2_Click(object sender, EventArgs e)
         {   //=====================================================  숨겨진 문자송신 버튼! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             Sendmsg_Lan(textBox3.Text);
 
         }
-        
-        private void Start_btn_Click_1(object sender, EventArgs e)            // <<=- 시작버튼 클릭시 시작한다.
+
+        private void Start_btn_Click(object sender, EventArgs e)            // <<=- 시작버튼 클릭시 시작한다.
         {
             task = "norm";
             TimeSpen = 0;
@@ -269,7 +247,7 @@ namespace KES_1_for_LAN
             NGTime = double.Parse(NGTime_txt.Text);
             NGPoint = 0;
             NGPoint_txt.Text = NGPoint.ToString();
-                       
+
             if (Target == 0 || NGTime == 0)
             {
                 MessageBox.Show("설정이 완료되지 않았습니다. 목표 포인트와 불량기준을 입력해 주세요.");
@@ -277,25 +255,27 @@ namespace KES_1_for_LAN
             else
             {
                 Start_btn.Enabled = false;
-                Thread Spent_thread = new Thread(new ThreadStart(delegate() // 작동시간 체크용 thread 생성
-                {   SpentimeCalc(6000000);              // 최대 작업 시간을 넣자.
+                Thread Spent_thread = new Thread(new ThreadStart(delegate () // 작동시간 체크용 thread 생성
+                {
+                    SpentimeCalc(6000000);              // 최대 작업 시간을 넣자.
                 }));
                 Spent_thread.Start();                   // thread 실행하여 병렬작업 시작
 
-                Thread Oper_thread = new Thread(new ThreadStart(delegate() // 전체 작업용 thread2 생성
-                {   Operation_Task(1000);               // 숫자는 의미 없다.
+                Thread Oper_thread = new Thread(new ThreadStart(delegate () // 전체 작업용 thread2 생성
+                {
+                    Operation_Task(1000);               // 숫자는 의미 없다.
                 }));
                 Oper_thread.Start();                    // thread 실행하여 병렬작업 시작
             }
             pictureBox1.Image = KES_1_for_LAN.Properties.Resources.home_pos3;
         }
 
-        private void Pause_btn_Click_1(object sender, EventArgs e)
+        private void Pause_btn_Click(object sender, EventArgs e)
         {
             ecmd = "$Pause";
-            Sendmsg_Lan(ecmd);    
+            Sendmsg_Lan(ecmd);
             send_N_check(5);
-            
+
             if (task == "com_fail")
             {
                 rob_stat = "stop";
@@ -307,10 +287,10 @@ namespace KES_1_for_LAN
             }
         }
 
-        private void Cont_btn_Click_1(object sender, EventArgs e)// <<=- 일시정지 해제 버튼 클릭시 시작한다.
+        private void Cont_btn_Click(object sender, EventArgs e)// <<=- 일시정지 해제 버튼 클릭시 시작한다.
         {
             ecmd = "$Continue";
-            Sendmsg_Lan(ecmd);    
+            Sendmsg_Lan(ecmd);
             send_N_check(5);
 
             if (task == "com_fail")
@@ -325,7 +305,7 @@ namespace KES_1_for_LAN
         }
 
 
-        private void Stop_btn_Click_1(object sender, EventArgs e)// <<=- 작업 중지 버튼 클릭시 시작한다.
+        private void Stop_btn_Click(object sender, EventArgs e)// <<=- 작업 중지 버튼 클릭시 시작한다.
         {
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);
@@ -340,11 +320,11 @@ namespace KES_1_for_LAN
                 insert_listbox1("작업을 모두 중지하고 그자리에 멈춥니다. 제자리로 복귀하려면 재설정을 눌러주세요");
                 rob_stat = "stop";
             }
-            
+
         }
 
 
-        private void Reset_btn_Click_1(object sender, EventArgs e)// <<=- 재설정 버튼 클릭시 시작한다.
+        private void Reset_btn_Click(object sender, EventArgs e)// <<=- 재설정 버튼 클릭시 시작한다.
         {
             if (MessageBox.Show("모든 설정이 초기화되며 로봇이 HOME 으로 이동합니다. \n\r 초기화하지 않으려면 아니오(N)를 눌러 주세요!!", "설정 초기화 및 로봇 HOME 복귀", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -361,7 +341,7 @@ namespace KES_1_for_LAN
             Sendmsg_Lan(ecmd);
             send_N_check(5);
             Thread.Sleep(50);
-                        
+
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);
             send_N_check(5);
@@ -385,20 +365,148 @@ namespace KES_1_for_LAN
 
 
         }
+
+
+        private void Button1_Click(object sender, EventArgs e)
+        { //=============================================================== Teach Pendent Open Btn
+
+            point_list frm2 = new point_list(ip, port);
+            frm2.Show();
+
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ecmd = "$SetMotorsOn,1";
+            Sendmsg_Lan(ecmd);
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            ecmd = "$SetMotorsOff,1";
+            Sendmsg_Lan(ecmd);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ecmd = "$Execute,\"Jump xy(300,200,-10,-90)\"";
+            Sendmsg_Lan(ecmd);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ecmd = "$Abort";
+            Sendmsg_Lan(ecmd);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            ecmd = "$Execute,\"Jump home1\"";
+            Sendmsg_Lan(ecmd);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            ecmd = "$Execute,\"Jump p0\"";
+            Sendmsg_Lan(ecmd);
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Sendmsg_Lan(textBox4.Text);
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            Sendmsg_Lan(textBox5.Text);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            ecmd = "$Execute,\"Speed " + speed + "\"";
+            Sendmsg_Lan(ecmd);
+
+            //Sendmsg_Lan(textBox6.Text);
+        }
+
+        #endregion
+
+
+        #region 메서드
+
         //*************************************************************************************************************************
         //*************************************************** 프로시져형 **********************************************************
         //*************************************************************************************************************************
 
+
+
+
+        private void init_load(int intval)
+        {
+
+            lbl_led_auto.BackColor = Color.Empty;
+            lbl_led_ready.BackColor = Color.Empty;
+            lbl_led_run.BackColor = Color.Empty;
+            lbl_led_paused.BackColor = Color.Empty;
+            lbl_led_warning.BackColor = Color.Empty;
+            lbl_led_serror.BackColor = Color.Empty;
+            lbl_led_safty.BackColor = Color.Empty;
+            lbl_led_estop.BackColor = Color.Empty;
+            lbl_led_error.BackColor = Color.Empty;
+
+            lbl_led_auto.BackColor = Color.GreenYellow;
+            Thread.Sleep(intval);
+            lbl_led_auto.BackColor = Color.Empty;
+            lbl_led_ready.BackColor = Color.GreenYellow;
+            Thread.Sleep(intval);
+            lbl_led_ready.BackColor = Color.Empty;
+            lbl_led_run.BackColor = Color.GreenYellow;
+            Thread.Sleep(intval);
+            lbl_led_run.BackColor = Color.Empty;
+            lbl_led_paused.BackColor = Color.Yellow;
+            Thread.Sleep(intval);
+            lbl_led_paused.BackColor = Color.Empty;
+            lbl_led_warning.BackColor = Color.Red;
+            Thread.Sleep(intval);
+            lbl_led_warning.BackColor = Color.Empty;
+            lbl_led_serror.BackColor = Color.Red;
+            Thread.Sleep(intval);
+            lbl_led_serror.BackColor = Color.Empty;
+            lbl_led_safty.BackColor = Color.Yellow;
+            Thread.Sleep(intval);
+            lbl_led_safty.BackColor = Color.Empty;
+            lbl_led_estop.BackColor = Color.Red;
+            Thread.Sleep(intval);
+            lbl_led_estop.BackColor = Color.Empty;
+            lbl_led_error.BackColor = Color.Red;
+            Thread.Sleep(intval);
+            lbl_led_error.BackColor = Color.Empty;
+
+            Thread Status_thread = new Thread(new ThreadStart(delegate () // 전체 작업용 thread2 생성
+            {
+                Robot_Status(500);               // 숫자는 인터벌.
+            }));
+            Status_thread.Start();               // thread 실행하여 병렬작업 시작  
+
+        }
+
+
         void anytime_run(int interv) //  코넥팅 되면 항상 가동되어 송수신 표시한다.
         {
-        any_loop:
+            any_loop:
             this.Invoke(new Action(() =>
             {
                 textBox1.Text = DateTime.Now.ToLongTimeString();//<<--- 시간표시기
             }));
-            
+
             ComPort_btn.BackColor = Color.YellowGreen;
-            
+
             label_tx.BackColor = Color.LawnGreen;
             label_rx.BackColor = Color.White;
             label_ex.BackColor = Color.White;
@@ -439,15 +547,15 @@ namespace KES_1_for_LAN
 
         void read_buff()                                      // 수신 메세지를 처리하는 프로시져
         {
-          read_loop:
+            read_loop:
             if (sock.Available != 0)
-           {
+            {
                 byte[] buff = new byte[1024];
                 n = sock.Receive(buff);
                 string output = Encoding.ASCII.GetString(buff, 0, n);
                 lan_read = output;
                 //Console.WriteLine("[" + n + "] bytes Received!!: " + output);
-                if (lan_read.Length > 10) 
+                if (lan_read.Length > 10)
                 {
                     if (lan_read.Substring(0, 10) == "#GetStatus")
                     {
@@ -477,15 +585,15 @@ namespace KES_1_for_LAN
             Console.WriteLine("read_buff()종료");
         }
 
-       
+
 
         private void Robot_Status(int interval)
         {// $GetStatus 송신 -> #GetStatus,Teach/Auto/Warning/SError/Safeguard/EStop/Error/Paused/Running/Ready, Error/Warning code(4digit)
          //                    #GetStatus,0100000001,0000
-           stat_loop:
+            stat_loop:
             Sendmsg_Lan("$GetStatus");
-           // read_buff();
-           // Console.WriteLine("[!!] !!: " + stat_all);
+            // read_buff();
+            // Console.WriteLine("[!!] !!: " + stat_all);
             if (stat_all.Length > 24)
             {
                 if (stat_all.Substring(0, 10) == "#GetStatus" && stat_all.Length > 11)
@@ -558,7 +666,7 @@ namespace KES_1_for_LAN
                 lbl_led_error.BackColor = Color.Red;
             else
                 lbl_led_error.BackColor = Color.Empty;
-            
+
             Thread.Sleep(interval - 100);
             lbl_led_auto.BackColor = Color.Empty;
             lbl_led_ready.BackColor = Color.Empty;
@@ -646,7 +754,7 @@ namespace KES_1_for_LAN
         private void send_N_check(int cnt)
         {
             int trycnt = 0;
-        send_again:
+            send_again:
             if (lan_read == ("#" + ecmd.Substring(1, ecmd.Length - 1) + ",0\r\n"))                 //  "$Abort" 에 대한 응답(\r\n 은 종료문자) 
             {
                 Console.WriteLine("lan_read = true ");
@@ -715,7 +823,7 @@ namespace KES_1_for_LAN
 
         private void Operation_Task(int opc)                 // 전체 작업 진행하는 쓰레드
         {
-            
+
             insert_listbox1(" KES-1 이 작업을 시작합니다. " + Target + "포인트");
             insert_listbox1(" 로봇을 초기화 하고 있습니다. ");
             startCalcTime = DateTime.Now;
@@ -734,11 +842,11 @@ namespace KES_1_for_LAN
             Sendmsg_Lan(ecmd);          // $Reset 송신 -> 수신확인
             send_N_check(5);            // 재시도 횟수 넣어준다.
             Thread.Sleep(50);
-                        
+
             string rob_start = "pass";
             Start_Condition();
 
-            
+
             Console.WriteLine("Operation_Task 쓰레드가 시작되었습니다. :" + task);
             //==================================================================================================================================//
             // =======================>>>>>>>>>>   기동조건이 만족하여 실제 기동을 시작하자.  ==================================================//
@@ -756,7 +864,7 @@ namespace KES_1_for_LAN
             x_axis = "263";               // 매 작업마다 x축 좌표를 넣어 준다(실 좌표값 * 100).
             ecmd = "$SetMemIOWord";
             ecmd_str = ",11" + x_axis;    // x 좌표를 11번 mem IO 에 넣어 준다.
-            Sendmsg_Lan (ecmd+ecmd_str);
+            Sendmsg_Lan(ecmd + ecmd_str);
 
             y_axis = "133";               // 매 작업마다 y축 좌표를 넣어 준다(실 좌표값 * 100).
             ecmd = "$SetMemIOWord";
@@ -801,9 +909,9 @@ namespace KES_1_for_LAN
             Sendmsg_Lan(ecmd);             // #GetIO,1  응답이 이와 같이 0,1로 옴.,
             // ** -->>   #GetIO,1 로 응답되면 다음으로 넘어가고 #GetIO,0 으로 응답되면 다시 시도 하거나, 대기 하거나, 다른 시도~~~
 
-            ecmd = "$SetIO";               
+            ecmd = "$SetIO";
             ecmd_str = ",6,1";             // 6번 bit는 나사흡착하라, 1->0 바꾸면 나사흡착 꺼라. (로봇의 hard wiring 된 출력의 설정.)
-            Sendmsg_Lan(ecmd+ecmd_str);
+            Sendmsg_Lan(ecmd + ecmd_str);
 
             ecmd = "$SetIO";
             ecmd_str = ",10,1";            // 10번 bit는 전동 드라이버 ON , 300 ~ 500ms 후에 끄자.. (로봇의 hard wiring 된 출력의 설정.)
@@ -1045,12 +1153,6 @@ namespace KES_1_for_LAN
 
 
 
-
-
-
-
-
-
         private void SpentimeCalc(int aaa)                  // 동작 시간 계산하는 프로시져.
         {
             Console.WriteLine("SpentimeCalc 쓰레드가 시작되었습니다.");
@@ -1117,7 +1219,7 @@ namespace KES_1_for_LAN
                 }
                 if (rob_stat == "e_stop")
                 {
-                   string stmsg = listBox.Items[0].ToString();
+                    string stmsg = listBox.Items[0].ToString();
                     if (stmsg != " Emergency Stop 발생. 해제를 기다립니다. ")
                     {
                         listBox.Items.Insert(0, " Emergency Stop 발생. 해제를 기다립니다. ");
@@ -1132,7 +1234,7 @@ namespace KES_1_for_LAN
                 }
                 if (rob_stat == "s_stop")
                 {
-                   string stmsg = listBox.Items[0].ToString();
+                    string stmsg = listBox.Items[0].ToString();
                     if (stmsg != " Safty Guard 열림. 해제를 기다립니다. ")
                     {
                         listBox.Items.Insert(0, " Safty Guard 열림. 해제를 기다립니다. ");
@@ -1172,76 +1274,8 @@ namespace KES_1_for_LAN
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
-        { //=============================================================== Teach Pendent Open Btn
 
-            point_list frm2 = new point_list(ip, port);
-            frm2.Show();
+        #endregion
 
-
-   
-
-
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            ecmd = "$SetMotorsOn,1";
-            Sendmsg_Lan(ecmd);
-                
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            ecmd = "$SetMotorsOff,1";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Jump xy(300,200,-10,-90)\"";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Abort";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Jump home1\"";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Jump p0\"";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            Sendmsg_Lan(textBox4.Text);
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            Sendmsg_Lan(textBox5.Text);
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Speed " + speed + "\"";
-            Sendmsg_Lan(ecmd);
-            
-            //Sendmsg_Lan(textBox6.Text);
-        }
     }
 }

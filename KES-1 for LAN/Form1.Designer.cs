@@ -116,8 +116,7 @@
             this.button1.TabIndex = 57;
             this.button1.Text = "Point Teach";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
+             // 
             // label_bar2
             // 
             this.label_bar2.BackColor = System.Drawing.Color.DarkSlateGray;
@@ -458,7 +457,7 @@
             this.button2.TabIndex = 21;
             this.button2.Text = "send to";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+         
             // 
             // IP_txt1
             // 
@@ -515,7 +514,6 @@
             this.Reset_btn.Size = new System.Drawing.Size(160, 105);
             this.Reset_btn.TabIndex = 33;
             this.Reset_btn.UseVisualStyleBackColor = false;
-            this.Reset_btn.Click += new System.EventHandler(this.Reset_btn_Click_1);
             // 
             // Stop_btn
             // 
@@ -529,7 +527,6 @@
             this.Stop_btn.Size = new System.Drawing.Size(160, 105);
             this.Stop_btn.TabIndex = 32;
             this.Stop_btn.UseVisualStyleBackColor = false;
-            this.Stop_btn.Click += new System.EventHandler(this.Stop_btn_Click_1);
             // 
             // Cont_btn
             // 
@@ -543,7 +540,6 @@
             this.Cont_btn.Size = new System.Drawing.Size(160, 105);
             this.Cont_btn.TabIndex = 34;
             this.Cont_btn.UseVisualStyleBackColor = false;
-            this.Cont_btn.Click += new System.EventHandler(this.Cont_btn_Click_1);
             // 
             // Pause_btn
             // 
@@ -558,7 +554,6 @@
             this.Pause_btn.Size = new System.Drawing.Size(160, 105);
             this.Pause_btn.TabIndex = 36;
             this.Pause_btn.UseVisualStyleBackColor = false;
-            this.Pause_btn.Click += new System.EventHandler(this.Pause_btn_Click_1);
             // 
             // Start_btn
             // 
@@ -573,7 +568,6 @@
             this.Start_btn.Size = new System.Drawing.Size(160, 105);
             this.Start_btn.TabIndex = 35;
             this.Start_btn.UseVisualStyleBackColor = false;
-            this.Start_btn.Click += new System.EventHandler(this.Start_btn_Click_1);
             // 
             // ComPort_btn
             // 
@@ -586,8 +580,7 @@
             this.ComPort_btn.TabIndex = 20;
             this.ComPort_btn.Text = "Connect";
             this.ComPort_btn.UseVisualStyleBackColor = false;
-            this.ComPort_btn.Click += new System.EventHandler(this.ComPort_btn_Click);
-            // 
+             // 
             // label_tx
             // 
             this.label_tx.BackColor = System.Drawing.Color.White;
@@ -656,7 +649,7 @@
             this.label12.TabIndex = 64;
             this.label12.Text = "Warning";
             this.label12.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.label12.Click += new System.EventHandler(this.label12_Click);
+           
             // 
             // label18
             // 
@@ -808,7 +801,7 @@
             this.button3.TabIndex = 66;
             this.button3.Text = "motor ON";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+           
             // 
             // button4
             // 
@@ -818,7 +811,7 @@
             this.button4.TabIndex = 67;
             this.button4.Text = "motor Off";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+           
             // 
             // button5
             // 
@@ -828,7 +821,7 @@
             this.button5.TabIndex = 68;
             this.button5.Text = "300-200";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            
             // 
             // button6
             // 
@@ -838,7 +831,6 @@
             this.button6.TabIndex = 69;
             this.button6.Text = "abort";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -848,8 +840,7 @@
             this.button7.TabIndex = 70;
             this.button7.Text = "HOME";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
+              // 
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(438, 766);
@@ -858,7 +849,6 @@
             this.button8.TabIndex = 71;
             this.button8.Text = "p0";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // button9
             // 
@@ -868,8 +858,7 @@
             this.button9.TabIndex = 72;
             this.button9.Text = "button9";
             this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
+             // 
             // button10
             // 
             this.button10.Location = new System.Drawing.Point(30, 793);
@@ -878,7 +867,6 @@
             this.button10.TabIndex = 73;
             this.button10.Text = "button10";
             this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // button11
             // 
@@ -888,8 +876,7 @@
             this.button11.TabIndex = 74;
             this.button11.Text = "button11";
             this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
+             // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(101, 764);
