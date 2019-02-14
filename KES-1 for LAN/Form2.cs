@@ -40,12 +40,42 @@ namespace KES_1_for_LAN
         double z_axis = 0;
         double u_axis = -90;
 
-
+        int counter = 0;
+        Thread countThread = null;
+        bool stop = false;
         public Form2()
         {
             InitializeComponent();
+            
+            btnState.MouseDown += BtnState_MouseDown;
+            btnState.MouseUp += BtnState_MouseUp;
 
         }
+        private void BtnState_MouseUp(object sender, MouseEventArgs e)
+        {
+            stop = true;
+            countThread.Join();
+            MessageBox.Show(counter.ToString());
+        }
+
+
+        private void BtnState_MouseDown(object sender, MouseEventArgs e)
+        {
+            stop = false;
+            counter = 0;
+            countThread = new Thread(() =>
+            {
+                while (!stop)
+                {
+                    counter++;
+
+                    Thread.Sleep(100);
+
+                }
+            });
+            countThread.Start();
+        }
+
 
         private void point_list_Load(object sender, EventArgs e)
         {
@@ -111,7 +141,7 @@ namespace KES_1_for_LAN
 
         stat_loop:
             Sndmsg_Lan("$Execute,\"Where\"");
-            Thread.Sleep(50);
+            //Thread.Sleep(50);
             Console.WriteLine("[!!] !!: " + lan_read2);
 
             if (lan_read2.Length > 16)
@@ -157,8 +187,8 @@ namespace KES_1_for_LAN
                 }
             }
 
-            Thread.Sleep(500);
-            //goto stat_loop;
+            Thread.Sleep(1000);
+            goto stat_loop;
 
         }
 
@@ -169,7 +199,7 @@ namespace KES_1_for_LAN
                 Robot_Status();
             }));
             RobStat_thread.Start();
-            
+            //Robot_Status();
         }
 
         private void btn_ny_Click(object sender, EventArgs e)
@@ -186,9 +216,15 @@ namespace KES_1_for_LAN
             {
                 y_axis = y_axis - 10;
             }
+            else if(usr_radiobtn.Checked == true)
+            {
+                y_axis = y_axis - double.Parse(user_pitch_txt.Text);
+            }
+
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             //Sndmsg_Lan("$execute, \"Move xy(311,255,-20,-85)\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
 
         }
 
@@ -206,9 +242,14 @@ namespace KES_1_for_LAN
             {
                 y_axis = y_axis + 10;
             }
+            else if (usr_radiobtn.Checked == true)
+            {
+                y_axis = y_axis + double.Parse(user_pitch_txt.Text);
+            }
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             //Sndmsg_Lan("$execute, \"Move xy(311,255,-20,-85)\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
 
         private void btn_nx_Click(object sender, EventArgs e)
@@ -225,9 +266,14 @@ namespace KES_1_for_LAN
             {
                 x_axis = x_axis - 10;
             }
+            else if (usr_radiobtn.Checked == true)
+            {
+                x_axis = x_axis - double.Parse(user_pitch_txt.Text);
+            }
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             //Sndmsg_Lan("$execute, \"Move xy(311,255,-20,-85)\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
 
         private void btn_px_Click(object sender, EventArgs e)
@@ -244,9 +290,14 @@ namespace KES_1_for_LAN
             {
                 x_axis = x_axis + 10;
             }
+            else if (usr_radiobtn.Checked == true)
+            {
+                x_axis = x_axis + double.Parse(user_pitch_txt.Text);
+            }
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             //Sndmsg_Lan("$execute, \"Move xy(311,255,-20,-85)\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
 
         private void btn_nz_Click(object sender, EventArgs e)
@@ -263,6 +314,10 @@ namespace KES_1_for_LAN
             {
                 z_axis = z_axis - 10;
             }
+            else if (usr_radiobtn.Checked == true)
+            {
+                z_axis = z_axis - double.Parse(user_pitch_txt.Text);
+            }
             if (z_axis > 0)
                 z_axis = -0.1;
 
@@ -271,6 +326,7 @@ namespace KES_1_for_LAN
 
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
 
         private void btn_pz_Click(object sender, EventArgs e)
@@ -287,6 +343,10 @@ namespace KES_1_for_LAN
             {
                 z_axis = z_axis + 10;
             }
+            else if (usr_radiobtn.Checked == true)
+            {
+                z_axis = z_axis + double.Parse(user_pitch_txt.Text);
+            }
             if (z_axis > 0)
                 z_axis = -0.1;
 
@@ -295,16 +355,66 @@ namespace KES_1_for_LAN
 
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
 
         private void btn_nu_Click(object sender, EventArgs e)
         {
+            if (m01_radiobtn.Checked == true)
+            {
+                u_axis = u_axis - 0.01;
+            }
+            else if (m1_radiobtn.Checked == true)
+            {
+                u_axis = u_axis - 0.1;
+            }
+            else if (m10_radiobtn.Checked == true)
+            {
+                u_axis = u_axis - 1;
+            }
+            else if (usr_radiobtn.Checked == true)
+            {
+                u_axis = u_axis - (double.Parse(user_pitch_txt.Text) / 10);
+            }
+            if (u_axis > 360)
+                u_axis = 359.9;
 
+            if (u_axis < -360)
+                u_axis = -359.9;
+
+            Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
 
         private void btn_pu_Click(object sender, EventArgs e)
         {
+            if (m01_radiobtn.Checked == true)
+            {
+                u_axis = u_axis + 0.01;
+            }
+            else if (m1_radiobtn.Checked == true)
+            {
+                u_axis = u_axis + 0.1;
+            }
+            else if (m10_radiobtn.Checked == true)
+            {
+                u_axis = u_axis + 1;
+            }
+            else if (usr_radiobtn.Checked == true)
+            {
+                u_axis = u_axis + (double.Parse(user_pitch_txt.Text) / 10);
+            }
 
+            if (u_axis > 360)
+                u_axis = 359.9;
+
+            if (u_axis < -360)
+                u_axis = -359.9;
+
+            Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+            //Robot_Status();
         }
     }
 }

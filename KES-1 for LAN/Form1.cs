@@ -840,7 +840,7 @@ namespace KES_1_for_LAN
             Thread.Sleep(50);
 
             ecmd = "$Reset";
-            Sendmsg_Lan(ecmd);          // $Reset 송신 -> 수신확인
+            Sendmsg_Lan(ecmd+ecmd_str);          // $Reset 송신 -> 수신확인
             send_N_check(5);            // 재시도 횟수 넣어준다.
             Thread.Sleep(50);
 
