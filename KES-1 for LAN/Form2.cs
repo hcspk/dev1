@@ -39,11 +39,11 @@ namespace KES_1_for_LAN
        
 
         
-        public point_list(string ip, int port)
+        public point_list()
         {
             InitializeComponent();
-            Ip = ip;
-            Port = port;
+         //   Ip = ip;
+        //    Port = port;
         }
 
         private void point_list_Load(object sender, EventArgs e)

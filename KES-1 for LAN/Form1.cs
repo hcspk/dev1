@@ -84,7 +84,7 @@ namespace KES_1_for_LAN
             this.Cont_btn.Click += Cont_btn_Click;
             this.Pause_btn.Click += Pause_btn_Click;
 
-            this.button1.Click += Button1_Click;
+        
             this.button2.Click += Button2_Click;
             this.button3.Click += this.button3_Click;
             this.button4.Click += this.button4_Click;
@@ -97,6 +97,14 @@ namespace KES_1_for_LAN
             this.button11.Click += this.button11_Click;
 
             this.label12.Click += this.label12_Click;
+            this.btnForm2.Click += BtnForm2_Click;
+
+        }
+
+        private void BtnForm2_Click(object sender, EventArgs e)
+        {
+            KES_1_for_LAN.point_list pop = new point_list();
+            pop.Show();
 
         }
 
@@ -366,14 +374,6 @@ namespace KES_1_for_LAN
 
         }
 
-
-        private void Button1_Click(object sender, EventArgs e)
-        { //=============================================================== Teach Pendent Open Btn
-
-            point_list frm2 = new point_list(ip, port);
-            frm2.Show();
-
-        }
 
         private void label12_Click(object sender, EventArgs e)
         {
