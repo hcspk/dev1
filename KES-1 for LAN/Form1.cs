@@ -47,7 +47,7 @@ namespace KES_1_for_LAN
         string any_stat;              // anytime_run,read 가 가동 or 중지를 하기 위해
         string lan_read;              // 수신데이터 from LAN 
         //========================== 이 부분은 상태조회 및 상태를 나타내는 변수
-        string stat_all = "";         // 상태조회 정보 총집합
+        public static string stat_all = "";         // 상태조회 정보 총집합
         string stat_teach = "";       // 상태조회 정보_티치모드
         string stat_auto = "";        // 상태조회 정보_자동
         string stat_warn = "";        // 상태조회 정보_월닝
@@ -103,7 +103,7 @@ namespace KES_1_for_LAN
 
         private void BtnForm2_Click(object sender, EventArgs e)
         {
-            KES_1_for_LAN.point_list pop = new point_list();
+            KES_1_for_LAN.Form2 pop = new Form2();
             pop.Show();
 
         }
@@ -554,6 +554,7 @@ namespace KES_1_for_LAN
                 n = sock.Receive(buff);
                 string output = Encoding.ASCII.GetString(buff, 0, n);
                 lan_read = output;
+                Form2.lan_read2 = output;
                 //Console.WriteLine("[" + n + "] bytes Received!!: " + output);
                 if (lan_read.Length > 10)
                 {
