@@ -18,7 +18,9 @@ namespace KES_1_for_LAN
         int Numb = 0;
         int n;
         public static string lan_read2;
-        
+        string teach_act;
+
+        string stat_all;
         string stat_teach;
         string stat_auto;
         string stat_warn;
@@ -57,8 +59,7 @@ namespace KES_1_for_LAN
             countThread.Join();
             MessageBox.Show(counter.ToString());
         }
-
-
+        
         private void BtnState_MouseDown(object sender, MouseEventArgs e)
         {
             stop = false;
@@ -75,28 +76,38 @@ namespace KES_1_for_LAN
             });
             countThread.Start();
         }
-
-
+        
         private void point_list_Load(object sender, EventArgs e)
         {
             //============================================================이 부분부터는 IP통신을 위한
                         
             string c2 = "시작입니다....!!!!!!!!!!!!!";
             Console.WriteLine("String: {0}", c2);
-            Robot_Status();
+            //Robot_Status();
+
+            lbl_led_auto.BackColor = Color.Empty;
+            lbl_led_ready.BackColor = Color.Empty;
+            lbl_led_run.BackColor = Color.Empty;
+            lbl_led_paused.BackColor = Color.Empty;
+            lbl_led_warning.BackColor = Color.Empty;
+            lbl_led_serror.BackColor = Color.Empty;
+            lbl_led_safty.BackColor = Color.Empty;
+            lbl_led_estop.BackColor = Color.Empty;
+            lbl_led_error.BackColor = Color.Empty;
+
+
 
 
         }
        private void button15_Click(object sender, EventArgs e)
         {
-            Robot_Status();
-            string sstr =Form1.stat_all;
+            //Robot_Status();
+            //string sstr =Form1.stat_all;
             Console.WriteLine("gksrnrfgslw" + lan_read2);
            // Sndmsg_Lan("$SetMotorsOn,1");
 
         }
-
-
+        
         
         private void insert_btn_Click_1(object sender, EventArgs e)
         {
@@ -106,22 +117,26 @@ namespace KES_1_for_LAN
             
         }
 
-        private void data_btn_Click(object sender, EventArgs e)
+        private void btn_teach_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < Numb; i++)
-            {
-                dataGridView1["Z", i].Value = "1234557";
-
-
-            }
-
-
+            int i = dataGridView1.RowCount;
+            Console.WriteLine("i : " + i);
+            //i = i - 1;
+            dataGridView1.Rows.Add(0,i,"p"+i, x_axis.ToString(), y_axis.ToString(), z_axis.ToString(), u_axis.ToString());
+            
         }
 
-     
-
-
-
+        private void data_btn_Click(object sender, EventArgs e)
+        {
+            int j = dataGridView1.RowCount;
+            for (int i = 0; i < j - 1; i++)
+            {
+                dataGridView1["Z", i].Value = txtBox_z_fix.Text;
+                
+            }
+            
+        }
+        
         private void Sndmsg_Lan(string msg)                   // LAN을 통해 메세지 송신 후 리드 버퍼.
         {
             byte[] sendmsg = new byte[1024];
@@ -132,7 +147,70 @@ namespace KES_1_for_LAN
             
         }
 
-       
+       private void Stat_Pannel()
+        {
+
+        stat_pan_loop:
+
+            if (stat_auto == "1")
+                lbl_led_auto.BackColor = Color.GreenYellow;
+            else
+                lbl_led_auto.BackColor = Color.Empty;
+
+            if (stat_ready == "1")
+                lbl_led_ready.BackColor = Color.GreenYellow;
+            else
+                lbl_led_ready.BackColor = Color.Empty;
+
+            if (stat_run == "1")
+                lbl_led_run.BackColor = Color.GreenYellow;
+            else
+                lbl_led_run.BackColor = Color.Empty;
+
+            if (stat_pause == "1")
+                lbl_led_paused.BackColor = Color.Yellow;
+            else
+                lbl_led_paused.BackColor = Color.Empty;
+
+            if (stat_warn == "1")
+                lbl_led_warning.BackColor = Color.Red;
+            else
+                lbl_led_warning.BackColor = Color.Empty;
+
+            if (stat_serror == "1")
+                lbl_led_serror.BackColor = Color.Red;
+            else
+                lbl_led_serror.BackColor = Color.Empty;
+
+            if (stat_safega == "1")
+                lbl_led_safty.BackColor = Color.Yellow;
+            else
+                lbl_led_safty.BackColor = Color.Empty;
+
+            if (stat_estop == "1")
+                lbl_led_estop.BackColor = Color.Red;
+            else
+                lbl_led_estop.BackColor = Color.Empty;
+
+            if (stat_error == "1")
+                lbl_led_error.BackColor = Color.Red;
+            else
+                lbl_led_error.BackColor = Color.Empty;
+
+            Thread.Sleep(400);
+            lbl_led_auto.BackColor = Color.Empty;
+            lbl_led_ready.BackColor = Color.Empty;
+            lbl_led_run.BackColor = Color.Empty;
+            lbl_led_paused.BackColor = Color.Empty;
+            lbl_led_warning.BackColor = Color.Empty;
+            lbl_led_serror.BackColor = Color.Empty;
+            lbl_led_safty.BackColor = Color.Empty;
+            lbl_led_estop.BackColor = Color.Empty;
+            lbl_led_error.BackColor = Color.Empty;
+            Thread.Sleep(100);
+            goto stat_pan_loop;
+
+        }
 
 
         private void Robot_Status()
@@ -150,44 +228,63 @@ namespace KES_1_for_LAN
                 if (lan_read2.Substring(10, 5) == "WORLD")
                 {
                     string world = lan_read2.Substring(20, 9);
-                    txtBox_x.Text = world;
+                    
                     x_axis = double.Parse(world);
                     Console.WriteLine("x======:" + world);
                      world = lan_read2.Substring(36, 9);
-                    txtBox_y.Text = world;
+                    
                     y_axis = double.Parse(world);
                     Console.WriteLine("y======:" + world);
                      world = lan_read2.Substring(52, 9);
-                    txtBox_z.Text = world;
+                    
                     z_axis = double.Parse(world);
                     Console.WriteLine("z======:" + world);
                      world = lan_read2.Substring(68, 9);
-                    txtBox_u.Text = world;
+                    
                     u_axis = double.Parse(world);
                     Console.WriteLine("u======:" + world);
-                    
+
+                    if (this.txtBox_x.InvokeRequired)
+                    {
+                        this.Invoke(new Action(() =>
+                        {
+                            txtBox_x.Text = string.Format("{0:#0.000}", x_axis);
+                            txtBox_y.Text = string.Format("{0:#0.000}", y_axis);
+                            txtBox_z.Text = string.Format("{0:#0.000}", z_axis);
+                            txtBox_u.Text = string.Format("{0:#0.000}", u_axis);
+                        }));
+                    }
+                    else
+                    {
+                        txtBox_x.Text = string.Format("{0:#0.000}", x_axis);
+                        txtBox_y.Text = string.Format("{0:#0.000}", y_axis);
+                        txtBox_z.Text = string.Format("{0:#0.000}", z_axis);
+                        txtBox_u.Text = string.Format("{0:#0.000}", u_axis);
+                    }
+                                       
                 }
             }
             if (lan_read2.Length > 8)
             {
                 if (lan_read2.Substring(0, 10) == "#GetStatus")
                 {
-                    stat_teach = lan_read2.Substring(11, 1);
-                    stat_auto = lan_read2.Substring(12, 1);
-                    stat_warn = lan_read2.Substring(13, 1);
-                    stat_serror = lan_read2.Substring(14, 1);
-                    stat_safega = lan_read2.Substring(15, 1);
-                    stat_estop = lan_read2.Substring(16, 1);
-                    stat_error = lan_read2.Substring(17, 1);
-                    stat_pause = lan_read2.Substring(18, 1);
-                    stat_run = lan_read2.Substring(19, 1);
-                    stat_ready = lan_read2.Substring(20, 1);
-                    stat_errcode = lan_read2.Substring(22, 4);
+                    stat_all = lan_read2;
+                    stat_teach = stat_all.Substring(12, 1);
+                    stat_auto = stat_all.Substring(13, 1);
+                    stat_warn = stat_all.Substring(14, 1);
+                    stat_serror = stat_all.Substring(15, 1);
+                    stat_safega = stat_all.Substring(16, 1);
+                    stat_estop = stat_all.Substring(17, 1);
+                    stat_error = stat_all.Substring(18, 1);
+                    stat_pause = stat_all.Substring(19, 1);
+                    stat_run = stat_all.Substring(20, 1);
+                    stat_ready = stat_all.Substring(21, 1);
+                    stat_errcode = stat_all.Substring(22, 5);
                     lan_read2 = "";
                 }
+                
             }
-
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             goto stat_loop;
 
         }
@@ -199,7 +296,13 @@ namespace KES_1_for_LAN
                 Robot_Status();
             }));
             RobStat_thread.Start();
-            //Robot_Status();
+
+            Thread Stat_pannel_thread = new Thread(new ThreadStart(delegate () // thread 생성
+            {
+                Stat_Pannel();
+            }));
+            Stat_pannel_thread.Start();
+
         }
 
         private void btn_ny_Click(object sender, EventArgs e)
@@ -415,6 +518,22 @@ namespace KES_1_for_LAN
             Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
             //Robot_Status();
+        }
+
+        private void btn_MtrOn_Click(object sender, EventArgs e)
+        {
+            Sndmsg_Lan("$SetMotorsOn,1");
+            
+        }
+
+        private void btn_MtrOff_Click(object sender, EventArgs e)
+        {
+            Sndmsg_Lan("$SetMotorsOff,1");
+        }
+
+        private void btn_ErrRst_Click(object sender, EventArgs e)
+        {
+            Sndmsg_Lan("$Reset");
         }
     }
 }

@@ -130,7 +130,7 @@ namespace KES_1_for_LAN
             Console.WriteLine("String: {0}", c2);
             Console.WriteLine("My IP: " + MyIP);
             listBox.Items.Insert(0, " 이 컴퓨터의 IP 주소 : " + MyIP);
-            textBox1.Text = DateTime.Now.ToLongTimeString();//<<--- 시간표시기
+            textBox1.Text = DateTime.Now.ToLongTimeString();           // <<--- 시간표시기
 
             lbl_led_auto.BackColor = Color.Empty;
             lbl_led_ready.BackColor = Color.Empty;
@@ -185,7 +185,7 @@ namespace KES_1_for_LAN
 
                         Thread initload_thread = new Thread(new ThreadStart(delegate () // 전체 작업용 thread2 생성
                         {
-                            init_load(50);               // 숫자는 인터벌.
+                            init_load(50);              // 숫자는 인터벌.
                         }));
                         initload_thread.Start();          // thread 실행하여 병렬작업 시작
                     }
