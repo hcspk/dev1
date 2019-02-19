@@ -10,6 +10,14 @@ using System.Threading;
 using System.Media;
 using System.IO;
 
+using System.ComponentModel;
+
+using System.Linq;
+
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+
 /// <summary>
 /// ////////////////////
 /// </summary>
@@ -84,22 +92,170 @@ namespace KES_1_for_LAN
             this.Cont_btn.Click += Cont_btn_Click;
             this.Pause_btn.Click += Pause_btn_Click;
 
-        
-            this.button2.Click += Button2_Click;
-            this.button3.Click += this.button3_Click;
-            this.button4.Click += this.button4_Click;
-            this.button5.Click += this.button5_Click;
-            this.button6.Click += this.button6_Click;
-            this.button7.Click += this.button7_Click;
-            this.button8.Click += this.button8_Click;
-            this.button9.Click += this.button9_Click;
-            this.button10.Click += this.button10_Click;
-            this.button11.Click += this.button11_Click;
-
-            this.label12.Click += this.label12_Click;
+      
             this.btnForm2.Click += BtnForm2_Click;
+            this.btnExcelimport.Click += BtnExcelimport_Click;
 
         }
+
+        private void BtnExcelimport_Click(object sender, EventArgs e)
+        {
+            F엑셀열기();
+        }
+
+        private DataSet F엑셀열기()
+        {
+            OpenFileDialog openFileDialog;
+
+            try
+            {
+                openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "EXCEL File|*.xls;*.xlsx|AllFiles(*.*)|*.*";
+
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return null;
+                }
+
+            
+
+                DataSet ds엑셀 = this.F엑셀읽기(openFileDialog.FileName, false);
+
+                //DataTable dt그룹 = new DataTable();
+                //dt그룹 = ds엑셀.Tables[0].DefaultView.ToTable(true, new string[] { "EXCEL1" });
+
+                return ds엑셀;
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public DataSet F엑셀읽기(string s파일명경로, bool b첫번째Row컬럼명여부 = false, int sheetIndex = 0)
+        {
+            String fileExt = "";
+            String sheetName = "Sheet1";
+            DataSet dpResult = new DataSet();
+            DataSet dsData = new DataSet();
+
+            HSSFWorkbook hssfwbh = null;
+            XSSFWorkbook hssfwbx = null;
+            int rownumber = 0;
+            int colnumber = 0;
+
+            dsData.Tables.Add("엑셀");
+            try
+            {
+                fileExt = Path.GetExtension(s파일명경로);
+
+                //Declare the sheet interface
+                ISheet sheet;
+
+                //Get the Excel file according to the extension
+                if (fileExt.ToLower() == ".xls")
+                {
+                    //Use the NPOI Excel xls object
+                    using (FileStream file = new FileStream(s파일명경로, FileMode.Open, FileAccess.Read))
+                    {
+                        hssfwbh = new HSSFWorkbook(file);
+                    }
+
+                    //Assign the sheet
+                    //sheet = hssfwbh.GetSheet(sheetName);
+                    sheet = hssfwbh.GetSheet(hssfwbh.GetSheetName(sheetIndex));   //.GetSheet(sheetName);
+                }
+                else //.xlsx extension
+                {
+                    //Use the NPOI Excel xlsx object
+                    using (FileStream file = new FileStream(s파일명경로, FileMode.Open, FileAccess.Read))
+                    {
+                        hssfwbx = new XSSFWorkbook(file);
+                    }
+
+                    //Assign the sheet
+                    sheet = hssfwbx.GetSheet(hssfwbx.GetSheetName(sheetIndex));   //.GetSheet(sheetName);
+                }
+                int noOfColumns = sheet.GetRow(0).PhysicalNumberOfCells;
+                noOfColumns = 5;
+                for (int col = 1; col <= noOfColumns; col++)
+                {
+                    dsData.Tables[0].Columns.Add((!b첫번째Row컬럼명여부) ? "EXCEL" + col.ToString() : sheet.GetRow(0).GetCell(col - 1).StringCellValue);
+                }
+                string s컬럼 = "";
+                int nRowDefault = (b첫번째Row컬럼명여부) ? 1 : 0;
+                for (int row = nRowDefault; row <= sheet.LastRowNum; row++)
+                {
+                    if (sheet.GetRow(row) == null)
+                    {
+                        break;
+                    }
+                    DataRow drRow = dsData.Tables[0].NewRow();
+                    rownumber = row;
+                    for (int col = 1; col <= noOfColumns; col++)
+                    {
+                        colnumber = col;
+                        s컬럼 = (!b첫번째Row컬럼명여부) ? "EXCEL" + col.ToString() : sheet.GetRow(0).GetCell(col - 1).StringCellValue;
+
+                        if (sheet.GetRow(row).GetCell(col - 1) != null)
+                        {
+                            if (sheet.GetRow(row).GetCell(col - 1).CellType == CellType.Numeric)
+                            {
+                                if (HSSFDateUtil.IsCellDateFormatted(sheet.GetRow(row).GetCell(col - 1)))
+                                {
+
+                                    drRow[s컬럼] = sheet.GetRow(row).GetCell(col - 1).DateCellValue;
+                                }
+                                else
+                                {
+                                    drRow[s컬럼] = sheet.GetRow(row).GetCell(col - 1).NumericCellValue;
+                                }
+                            }
+                            else
+                            {
+                                drRow[s컬럼] = sheet.GetRow(row).GetCell(col - 1).StringCellValue;
+                            }
+                        }
+                        else
+                        {
+                            drRow[s컬럼] = "";
+                        }
+                    }
+                    dsData.Tables[0].Rows.Add(drRow);
+                }
+                dpResult = dsData.Copy();
+            }
+            catch (Exception ex)
+            {
+                if (rownumber == 0)
+                {
+                    throw ex;
+                }
+                else
+                {
+                    throw new Exception("엑셀 줄:" + rownumber + " 열:" + colnumber + "에서 에러 발생==>" + ex.StackTrace);
+                }
+            }
+            finally
+            {
+                if (hssfwbh != null)
+                {
+                    hssfwbh.Close();
+                    hssfwbh = null;
+                }
+
+                if (hssfwbx != null)
+                {
+                    hssfwbx.Close();
+                    hssfwbx = null;
+                }
+            }
+            return dpResult;
+        }
+
+
+
 
         private void BtnForm2_Click(object sender, EventArgs e)
         {
@@ -130,8 +286,7 @@ namespace KES_1_for_LAN
             Console.WriteLine("String: {0}", c2);
             Console.WriteLine("My IP: " + MyIP);
             listBox.Items.Insert(0, " 이 컴퓨터의 IP 주소 : " + MyIP);
-            textBox1.Text = DateTime.Now.ToLongTimeString();           // <<--- 시간표시기
-
+           
             lbl_led_auto.BackColor = Color.Empty;
             lbl_led_ready.BackColor = Color.Empty;
             lbl_led_run.BackColor = Color.Empty;
@@ -241,11 +396,6 @@ namespace KES_1_for_LAN
             }
         }
 
-        private void Button2_Click(object sender, EventArgs e)
-        {   //=====================================================  숨겨진 문자송신 버튼! ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            Sendmsg_Lan(textBox3.Text);
-
-        }
 
         private void Start_btn_Click(object sender, EventArgs e)            // <<=- 시작버튼 클릭시 시작한다.
         {
@@ -315,6 +465,9 @@ namespace KES_1_for_LAN
 
         private void Stop_btn_Click(object sender, EventArgs e)// <<=- 작업 중지 버튼 클릭시 시작한다.
         {
+            Sendmsg_Lan("$execute,\"ON 11\"");
+            Sendmsg_Lan("$execute,\"OFF 11\"");
+
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);
             send_N_check(5);
@@ -375,65 +528,9 @@ namespace KES_1_for_LAN
         }
 
 
-        private void label12_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            ecmd = "$SetMotorsOn,1";
-            Sendmsg_Lan(ecmd);
 
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            ecmd = "$SetMotorsOff,1";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Jump xy(300,200,-10,-90)\"";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Abort";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Jump home1\"";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Jump p0\"";
-            Sendmsg_Lan(ecmd);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            Sendmsg_Lan(textBox4.Text);
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            Sendmsg_Lan(textBox5.Text);
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            ecmd = "$Execute,\"Speed " + speed + "\"";
-            Sendmsg_Lan(ecmd);
-
-            //Sendmsg_Lan(textBox6.Text);
-        }
 
         #endregion
 
@@ -502,7 +599,7 @@ namespace KES_1_for_LAN
             any_loop:
             this.Invoke(new Action(() =>
             {
-                textBox1.Text = DateTime.Now.ToLongTimeString();//<<--- 시간표시기
+               
             }));
 
             ComPort_btn.BackColor = Color.YellowGreen;
@@ -567,7 +664,7 @@ namespace KES_1_for_LAN
                         {
                             this.Invoke(new Action(() =>
                             {
-                                listBox_cmd.Items.Insert(0, "Robot : " + output + "  [" + n + "Bytes]");
+                             
                             }));
                         }
                     }
@@ -748,7 +845,7 @@ namespace KES_1_for_LAN
         {
             this.Invoke(new Action(() =>
             {
-                listBox_cmd.Items.Insert(0, insert_msg);
+               
             }));
         }
 
@@ -895,7 +992,7 @@ namespace KES_1_for_LAN
             }
             this.Invoke(new Action(() =>
             {
-                label1.Text = (DateTime.Now - startCalcTime).TotalSeconds + "초";
+              
             }));
         }
 
