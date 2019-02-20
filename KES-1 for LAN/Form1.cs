@@ -41,7 +41,9 @@ namespace KES_1_for_LAN
         string task = "norm";         // 전체 흐름에 사용
         string rob_stat = "";         // status pannel
         string ecmd = "";             // 로봇에 보낼 명령어($으로 시작)
-        string ecmd_str = "";         // 로봇에 보낼 명령문($으로 시작)
+        string judge = "";            // 양품 불량 판정
+        string act_task = "";         // acttime_calc 를 할려고 한다.
+      
 
         //========================== 이 부분부터는 IP통신을 위한 변수
         string MyIP;                  // PC의 IP
@@ -74,8 +76,8 @@ namespace KES_1_for_LAN
         string accels = "30";
         string x_axis = "";
         string y_axis =  "";
-       string z_axis =   "";
-       string u_axis = "";
+        string z_axis =   "";
+        string u_axis = "";
 
         #endregion
 
@@ -411,9 +413,7 @@ namespace KES_1_for_LAN
             DataSet ds = new DataSet();
             ds = null;
             ds = (DataSet)this.dgrData.DataSource;
-
-
-
+                       
             if (ds!= null)
             {
              
@@ -426,8 +426,7 @@ namespace KES_1_for_LAN
             }
             if (ds.Tables[0].Rows.Count != 0)
             {
-                Target =
-               Convert.ToInt32( Target_txt.Text);
+                Target = Convert.ToInt32( Target_txt.Text);
 
             }
             else
@@ -447,6 +446,12 @@ namespace KES_1_for_LAN
                 }));
                 Spent_thread.Start();                   // thread 실행하여 병렬작업 시작
 
+                Thread actt_thread = new Thread(new ThreadStart(delegate () // 체결시간 체크 thread 생성
+                {
+                    ActtimeCalc(10);                    // 불량판정 초단위 ...
+                }));
+                actt_thread.Start();
+                
                 Thread Oper_thread = new Thread(new ThreadStart(delegate () // 전체 작업용 thread2 생성
                 {
                     Operation_Task(1000,ds);               // 숫자는 의미 없다.
@@ -460,7 +465,7 @@ namespace KES_1_for_LAN
         {
             ecmd = "$Pause";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);
+            send_N_check(10);
 
             if (task == "com_fail")
             {
@@ -477,7 +482,7 @@ namespace KES_1_for_LAN
         {
             ecmd = "$Continue";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);
+            send_N_check(10);
 
             if (task == "com_fail")
             {
@@ -492,14 +497,25 @@ namespace KES_1_for_LAN
 
 
         private void Stop_btn_Click(object sender, EventArgs e)// <<=- 작업 중지 버튼 클릭시 시작한다.
-        {
-            Sendmsg_Lan("$execute,\"ON 11\"");
-            Sendmsg_Lan("$execute,\"OFF 11\"");
-
+        {            
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);
+            send_N_check(10);
+            Thread.Sleep(100);
+
+            ecmd = "$execute,\"Off 6\"";
+            Sendmsg_Lan(ecmd);
+            send_N_check(10);
+            Thread.Sleep(100);
+
+            ecmd = "$execute,\"On 11, 0.5, 0\"";
+            Sendmsg_Lan(ecmd);
+            send_N_check(10);
+            Thread.Sleep(50);
+
             Start_btn.Enabled = true;
+            task = "stop";
+
             if (task == "com_fail")
             {
                 rob_stat = "stop";
@@ -526,20 +542,33 @@ namespace KES_1_for_LAN
                 TimeSpen_txt.Text = string.Format("{0:#0.0}", TimeSpen);
                 strReceive = "0";
             }
+
+            task = "stop";
+
             ecmd = "$Stop";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);
+            send_N_check(10);
             Thread.Sleep(50);
 
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);
+            send_N_check(10);
             Thread.Sleep(50);
             Start_btn.Enabled = true;
 
             ecmd = "$Reset";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);
+            send_N_check(10);
+            Thread.Sleep(50);
+
+            ecmd = "$SetMotorsOff,1";
+            Sendmsg_Lan(ecmd);
+            send_N_check(10);
+            Thread.Sleep(50);
+
+            ecmd = "$execute,\"On 11, 0.5, 0\"";
+            Sendmsg_Lan(ecmd);
+            send_N_check(10);
             Thread.Sleep(50);
 
             if (task == "com_fail")
@@ -551,14 +580,11 @@ namespace KES_1_for_LAN
                 insert_listbox1("로봇이 홈으로 복귀합니다.");
                 rob_stat = "stop";
             }
-
+            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.home_pos3;
 
         }
 
-
-
-
-
+                     
 
         #endregion
 
@@ -617,7 +643,8 @@ namespace KES_1_for_LAN
             {
                 Robot_Status(500);               // 숫자는 인터벌.
             }));
-         ////일단주김   Status_thread.Start();               // thread 실행하여 병렬작업 시작  
+         ////일단주김   
+            Status_thread.Start();               // thread 실행하여 병렬작업 시작  
 
         }
 
@@ -678,16 +705,16 @@ namespace KES_1_for_LAN
                 byte[] buff = new byte[1024];
                 n = sock.Receive(buff);
                 string output = Encoding.ASCII.GetString(buff, 0, n);
-                lan_read = output;
+                //lan_read = output;
                 Form2.lan_read2 = output;
                 //Console.WriteLine("[" + n + "] bytes Received!!: " + output);
-                if (lan_read.Length > 10)
+                if (output.Length > 10)
                 {
-                    if (lan_read.Substring(0, 10) == "#GetStatus")
+                    if (output.Substring(0, 10) == "#GetStatus")
                     {
                         //Console.WriteLine("Robot: " + lan_read);
-                        stat_all = lan_read;
-                        lan_read = "";
+                        stat_all = output;
+                        //lan_read = "";
                         //if (stat_all != (string)listBox_cmd.Items[1])   <<----- 숙제....
                         {
                             this.Invoke(new Action(() =>
@@ -698,28 +725,27 @@ namespace KES_1_for_LAN
                     }
                     else
                     {
+                        lan_read = output;
                         Console.WriteLine("[" + n + "] bytes Received!!: " + output);
                     }
                 }
                 else
                 {
+                    lan_read = output;
                     Console.WriteLine("[" + n + "] bytes Received!!: " + output);
                 }
             }
             if (sock_stat == "normal")
             { goto read_loop; }
-            Console.WriteLine("read_buff()종료");
+            //Console.WriteLine("read_buff()종료");
         }
 
-
-
+        
         private void Robot_Status(int interval)
         {// $GetStatus 송신 -> #GetStatus,Teach/Auto/Warning/SError/Safeguard/EStop/Error/Paused/Running/Ready, Error/Warning code(4digit)
          //                    #GetStatus,0100000001,0000
             stat_loop:
             Sendmsg_Lan("$GetStatus");
-            // read_buff();
-            // Console.WriteLine("[!!] !!: " + stat_all);
             if (stat_all.Length > 24)
             {
                 if (stat_all.Substring(0, 10) == "#GetStatus" && stat_all.Length > 11)
@@ -888,6 +914,7 @@ namespace KES_1_for_LAN
             }
             else if (trycnt < cnt)
             {
+                Thread.Sleep(50);
                 trycnt++;
                 Console.WriteLine("lan_read = true " + trycnt);
                 goto send_again;
@@ -945,151 +972,352 @@ namespace KES_1_for_LAN
                 try_start++;
                 Thread.Sleep(500);
             }
+
         }
 
         private void Operation_Task(int opc, DataSet ds)                 // 전체 작업 진행하는 쓰레드
         {
+            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.home_pos3;
 
             insert_listbox1(" KES-1 이 작업을 시작합니다. " + Target + "포인트");
-            insert_listbox1(" 로봇을 초기화 하고 있습니다. ");
+            insert_listbox1(" 로봇을 초기화 합니다. ");
             startCalcTime = DateTime.Now;
 
             ecmd = "$Stop";
             Sendmsg_Lan(ecmd);          // $Stop 송신 -> 수신확인
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(50);
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(30);
 
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);          // $Abort 송신 -> 수신확인
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(50);
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(30);
 
             ecmd = "$Reset";
-            Sendmsg_Lan(ecmd + ecmd_str);          // $Reset 송신 -> 수신확인
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(50);
+            Sendmsg_Lan(ecmd);          // $Reset 송신 -> 수신확인
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(150);
 
-            string rob_start = "pass";
+            //string rob_start = "pass";
             Start_Condition();
+            if (task!="stop")
+                rob_stat = "norm";
 
+            Thread Start_thread = new Thread(new ThreadStart(delegate () // 상태판넬 thread 생성
+            {
+                Status_Pannel(500);                     // 점멸 간격(근데,,,, 숫자 사용 안함).
+            }));
+            Start_thread.Start();                       // thread 실행하여 병렬작업 시작
 
-            Console.WriteLine("Operation_Task 쓰레드가 시작되었습니다. :" + task);
-            //==================================================================================================================================//
-            // =======================>>>>>>>>>>   기동조건이 만족하여 실제 기동을 시작하자.  ==================================================//
-
-
+            Console.WriteLine("Operation_Task 쓰레드가 시작되었습니다. ~~~  task :" + task);
+            //========================================================================================================================//
+            //=======================>>>>>>>>>>   기동조건이 만족하여 실제 기동을 시작하자.  =========================================//
 
             ecmd = "$SetMotorsON,1";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+            Console.WriteLine("$SetMotorsON,1");
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(200);
 
-
-            ecmd = "$execute,\"speed 100\"";
+            ecmd = "$execute,\"Power High\"";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+            Console.WriteLine("$execute,\"Power High\"");
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(300);
+
+            ecmd = "$execute,\"speed 60\"";
+            Sendmsg_Lan(ecmd);
+            Console.WriteLine("$execute,\"speed 50\"");
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(300);
+
             ecmd = "$execute,\"accel 100,100\"";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+            Console.WriteLine("$execute,\"accel 100,100\"");
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(300);
 
-            for (int i = 0; i < ds.Tables[0].Rows.Count;i++)
-            {
-                if (false)
-                    break;
-                else {
+            Current = int.Parse(Current_txt.Text);
+            if (Current == 0)
+            { Current = 1; }
+            else
+            { Current = int.Parse(Current_txt.Text);
+            }
+                       
+            tar_val = (Target - Current) + 1;
+            int j = Math.Min(Target, ds.Tables[0].Rows.Count);
+//            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            for (int i = 0; i < j; i++)
+                {
+                judge = "OK";
+                if (Current >= 2)
+                {
+                    i = Current - 1;
+                    Current = 0;
+                }
+                while(rob_stat == "pause") { }
+                if (rob_stat != "norm" || task != "norm")
+                { break; }
+                else
+                {
+                    curr_val = ((i+1) - (Target - tar_val));   // 프로그래스바 계산을 위해, 이렇게 나눠서 계산해야 하더라,
+                    curr_val = curr_val / tar_val;             // 프로그래스바 계산을 위해, 이렇게 나눠서 계산해야 하더라,
+                    curr_val = curr_val * 100;                 // 프로그래스바 계산을 위해, 이렇게 나눠서 계산해야 하더라,
+                    int pr_val = Convert.ToInt32(curr_val);
+                    pictureBox1.Image = KES_1_for_LAN.Properties.Resources.supp_pos3;
+                                        
+                    x_axis = ds.Tables[0].Rows[i]["X"].ToString();
+                    y_axis = ds.Tables[0].Rows[i]["Y"].ToString();
+                    z_axis = ds.Tables[0].Rows[i]["Z"].ToString();
+                    u_axis = ds.Tables[0].Rows[i]["U"].ToString();
 
-                 x_axis = ds.Tables[0].Rows[i]["X"].ToString();
-                 y_axis = ds.Tables[0].Rows[i]["Y"].ToString();
-                 z_axis = ds.Tables[0].Rows[i]["Z"].ToString();
-                 u_axis = ds.Tables[0].Rows[i]["U"].ToString();
-
+                    //Thread.Sleep(500);
 
                     ecmd = "$execute,\"Jump P0\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
-            ecmd = "$GetIO,6";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다
-            Thread.Sleep(1000);
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);
+                    Console.WriteLine("$execute,\"Jump P0\"" + lan_read);
+                    
+                   loop_nasa_ready:
+                    ecmd = "$GetIO,6";
+                    Sendmsg_Lan(ecmd);
+                    if (lan_read == "#GetIO,1\r\n") { }
+                    else
+                    {
+                        if (listBox.Items[0].ToString() != "나사가 준비되지 않았습니다.")
+                        { insert_listbox1("나사가 준비되지 않았습니다."); }
+                        Thread.Sleep(500);
+                        goto loop_nasa_ready;
+                    }
 
-            ecmd = "$execute,\"Move P0 -Z(3)\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
-            ecmd = "$execute,\"ON 11\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+                    this.Invoke(new Action(() =>
+                    {
+                        Current_txt.Text = (i+1).ToString();
+                    }));
 
-            ecmd = "$GetIO,7";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
 
+                    ecmd = "$execute,\"On 10, 0.3, 0\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);
+                    Thread.Sleep(500);
 
-            ecmd = "$execute,\"Jump xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
 
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
-            ecmd = "$GetIO,17";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+                    ecmd = "$execute,\"Move P0 -Z(3)\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);
+                    Thread.Sleep(500);
 
-            ecmd = "$execute,\"speeds 500\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
-            ecmd = "$execute,\"accels 300,300\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+
+                    ecmd = "$execute,\"On 6\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);
+                    Thread.Sleep(500);
+
+                    ecmd = "$execute,\"On 11, 0.5, 0\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);
+                    Thread.Sleep(500);
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+
+                loop_nasa_get:
+                    ecmd = "$GetIO,7";
+                    Sendmsg_Lan(ecmd);
+                    if (lan_read == "#GetIO,1\r\n") { }
+                    else
+                    {
+                        if (listBox.Items[0].ToString() != "나사를 흡착하지 못했습니다.")
+                        { insert_listbox1("나사를 흡착하지 못했습니다."); }
+                        Thread.Sleep(500);
+ // 나중에 지우자                    goto loop_nasa_get;
+                    }
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+                    pictureBox1.Image = KES_1_for_LAN.Properties.Resources.mid_pos3;
+
+                    ecmd = "$execute,\"Jump xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(200);            
+                    Thread.Sleep(500);
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+                    pictureBox1.Image = KES_1_for_LAN.Properties.Resources.act_pos3;
+                    
+                loop_nasa_get2:
+                    ecmd = "$GetIO,7";
+                    Sendmsg_Lan(ecmd);
+                    if (lan_read == "#GetIO,1\r\n") { }
+                    else
+                    {
+                        if (listBox.Items[0].ToString() != "이동 중 나사가 이탈하였습니다.")
+                        { insert_listbox1("이동 중 나사가 이탈하였습니다."); }
+                        Thread.Sleep(500);
+// 나중에 지우자                 goto loop_nasa_get2;
+                    }
+
+                    ecmd = "$execute,\"speeds 150\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);            // 재시도 횟수 넣어준다.
+                    Thread.Sleep(500);
+                    ecmd = "$execute,\"accels 100,100\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);            // 재시도 횟수 넣어준다.
+                    Thread.Sleep(500);
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+
+                    ecmd = "$execute,\"On 10, 0.3, 0\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);            // 재시도 횟수 넣어준다.
+                    act_task = "start";
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+
+                    ecmd = "$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ") -Z(25)\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(200);
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+
+                loop_nasa_torq:
+                    ecmd = "$GetIO,17";
+                    Sendmsg_Lan(ecmd);
+                    if (lan_read == "#GetIO,1\r\n" || ActTime > 3) { }
+                    else
+                    {
+                        if (listBox.Items[0].ToString() != "나사 조립 중 토크가 발생하지 않습니다.")
+                        { insert_listbox1("나사 조립 중 토크가 발생하지 않습니다."); }
+                        Thread.Sleep(20);    // 50 ㅇ,로 바꾸자
+                        goto loop_nasa_torq;
+                    }
+                    if (ActTime < NGTime)
+                    { judge = "NG"; }
+                    act_task = "stop";
+
+                    ecmd = "$execute,\"Off 6\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);
+                    Thread.Sleep(100);
+
+                    ecmd = "$execute,\"On 11, 0.5, 0\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);            
+
+                    ecmd = "$execute,\"speeds 500\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);            
+                    //Thread.Sleep(1000);
+                    ecmd = "$execute,\"accels 300,300\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(50);            
+                    Thread.Sleep(1000);
+
+                    while (rob_stat == "pause") { }
+                    if (rob_stat != "norm" || task != "norm")
+                    { break; }
+
+                    ecmd = "$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"";
+                    Sendmsg_Lan(ecmd);
+                    send_N_check(200);
+
+                    if (judge == "NG")
+                    {
+                        ecmd = "$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")  :Z(0)\"";
+                        Sendmsg_Lan(ecmd);
+                        send_N_check(200);
+
+                        if (MessageBox.Show("NG!! Point: " + (i+1) + " 에 불량발생!! \r\n 재시도 하려면 불량나사 제거 후 '예'를 선택 하세요. \r\n 건너 뛰려면 마킹 후 '아니오'를 선택 하세요!!", "불량 발생", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            Console.WriteLine("NG Point: " + (i+1) + "에 재시도. 나사 제거요망");
+                            insert_listbox1(" ## NG Point: " + (i+1) + "에 재시도. 나사 제거요망");
+                            i = i - 1;
+                        }
+                        else
+                        {
+                            Console.WriteLine("NG Point: " + (i+1) + " 건너 뜀. 마킹, 나사 제거요망");
+                            insert_listbox1(" ## NG Point: " + (i+1) + " 건너 뜀. 마킹, 나사 제거요망");
+                        }
+
+                        ecmd = "$SetMotorsOn,1";
+                        Sendmsg_Lan(ecmd);
+                        send_N_check(500);
+                        Thread.Sleep(100);
+
+                        judge = "OK";
+                    }
+                    Thread.Sleep(200);
+                    pictureBox1.Image = KES_1_for_LAN.Properties.Resources.mid_pos3;
+                    this.Invoke(new Action(() =>
+                    {
+                        progressBar1.Value = pr_val;
+                    }));
                 }
-
+                
             }
 
-  
 
+            ecmd = "$execute,\"speed 60\"";
+            Sendmsg_Lan(ecmd);
+            Console.WriteLine("$execute,\"speed 50\"");
+            send_N_check(500);            // 재시도 횟수 넣어준다.
+            Thread.Sleep(200);
 
+            while (rob_stat == "pause") { }
+
+            Thread.Sleep(100);
             ecmd = "$execute,\"Jump HOME1\"";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+            send_N_check(500);            
+            Thread.Sleep(200);
+            pictureBox1.Image = KES_1_for_LAN.Properties.Resources.home_pos3;
 
-            ecmd = "$execute,\"OFF 11\"";
+            ecmd = "$execute,\"Off 6\"";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+            send_N_check(50);
+            Thread.Sleep(200);
 
+            ecmd = "$execute,\"On 11, 0.5, 0\"";
+            Sendmsg_Lan(ecmd);
+            send_N_check(500);            
+            Thread.Sleep(200);
+
+            while (rob_stat == "pause") { }
             ecmd = "$SetMotorsOff,1";
             Sendmsg_Lan(ecmd);
-            send_N_check(5);            // 재시도 횟수 넣어준다.
-            Thread.Sleep(1000);
+            send_N_check(500);            
+            Thread.Sleep(100);
 
-
-
-
-
-
-
-
-
-
-
-
-
+            task = "stop";
+            
+            this.Invoke(new Action(() =>
+            {
+                progressBar1.Value = 0;
+                Start_btn.Enabled = true;
+            }));
 
         }
-
-
-
+               
 
         private void SpentimeCalc(int aaa)                  // 동작 시간 계산하는 프로시져.
         {
@@ -1119,94 +1347,125 @@ namespace KES_1_for_LAN
         private void ActtimeCalc(int bbb)                   // 체결시간 계산하는 프로시져.
         {
             ActTime = 0;
-            while (strReceive != "INT4" && ActTime < bbb && task == "norm") // INT4 = 로봇에서 전동 토크가 발생 하였다는 신호
+
+           loop_acttime:
+            while(act_task != "start" && task != "stop")
+            { ActTime = 0; }
+            if (act_task == "start")
             {
+                if (this.Time_txt.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        Time_txt.Text = string.Format("{0:#0.0}", ActTime);
+                    }));
+                }
+                else
+                {
+                    Time_txt.Text = ActTime.ToString();
+                }
                 ActTime += 0.05;
-                Thread.Sleep(50);
-                Time_txt.Text = ActTime.ToString();
+                //Console.WriteLine("ActTime :   " + ActTime);
             }
+            else
+            {
+                ActTime = 0;
+            }
+            Thread.Sleep(50);
+            if (task != "stop")
+            {
+                goto loop_acttime;
+            }       
 
         }
 
         private void Status_Pannel(int ccc)                         //상태를 모니터링 하여 화면에 표현
         {
+            string lbl_stat = "";
             while (task != "stop")
             {
                 if (rob_stat == "norm")
                 {
-                    label_stat.Text = "작    업    중";
+                    lbl_stat = "작    업    중";
                     label_stat.ForeColor = Color.SeaGreen;
-                    label_bar.BackColor = Color.LawnGreen;
-                    label_bar2.BackColor = Color.LawnGreen;
-                    Thread.Sleep(500);
+                    lbl_start.BackColor = Color.LawnGreen;
+                    //label_bar2.BackColor = Color.LawnGreen;                   
                 }
                 if (rob_stat == "error")
                 {
                     string stmsg = listBox.Items[0].ToString();
                     if (stmsg != " Robot Error 발생. 해제를 기다립니다. ")
                     {
-                        listBox.Items.Insert(0, " Robot Error 발생. 해제를 기다립니다. ");
+                        insert_listbox1(" Robot Error 발생. 해제를 기다립니다. ");
+//                        listBox.Items.Insert(0, " Robot Error 발생. 해제를 기다립니다. ");
                     }
-                    label_stat.Text = "Robot Error 발생";
+                    lbl_stat = "Robot Error 발생";
                     label_stat.ForeColor = Color.Red;
                     label_bar.BackColor = Color.Red;
-                    label_bar2.BackColor = Color.Red;
-                    Thread.Sleep(300);
-                    //listBox.BackColor = Color.Red;
-                    Thread.Sleep(200);
+                    label_bar2.BackColor = Color.Red;                    
                 }
                 if (rob_stat == "e_stop")
                 {
                     string stmsg = listBox.Items[0].ToString();
                     if (stmsg != " Emergency Stop 발생. 해제를 기다립니다. ")
                     {
-                        listBox.Items.Insert(0, " Emergency Stop 발생. 해제를 기다립니다. ");
+                        insert_listbox1(" Emergency Stop 발생. 해제를 기다립니다. ");
                     }
-                    label_stat.Text = "Emergency Stop 발생";
+                    lbl_stat = "Emergency Stop 발생";
                     label_stat.ForeColor = Color.Red;
                     label_bar.BackColor = Color.Red;
-                    label_bar2.BackColor = Color.Red;
-                    Thread.Sleep(300);
-                    //listBox.BackColor = Color.Red; 
-                    Thread.Sleep(200);
+                    label_bar2.BackColor = Color.Red;                    
                 }
                 if (rob_stat == "s_stop")
                 {
                     string stmsg = listBox.Items[0].ToString();
-                    if (stmsg != " Safty Guard 열림. 해제를 기다립니다. ")
+                    if (stmsg != " Safty Guard 작동. 해제를 기다립니다. ")
                     {
-                        listBox.Items.Insert(0, " Safty Guard 열림. 해제를 기다립니다. ");
+                        insert_listbox1(" Safty Guard 작동. 해제를 기다립니다. ");
                     }
-                    label_stat.Text = "Safty Guard 열림";
+                    lbl_stat = "Safty Guard 열림";
                     label_stat.ForeColor = Color.Gold;
                     label_bar.BackColor = Color.Yellow;
-                    label_bar2.BackColor = Color.Yellow;
-                    Thread.Sleep(300);
-                    //listBox.BackColor = Color.Yellow;
-                    Thread.Sleep(200);
+                    label_bar2.BackColor = Color.Yellow;       
                 }
                 if (rob_stat == "pause")
                 {
                     string stmsg = listBox.Items[0].ToString();
                     if (stmsg != " 사용자에 의해 일시정지 되었습니다. ")
                     {
-                        listBox.Items.Insert(0, " 사용자에 의해 일시정지 되었습니다. ");
+                        insert_listbox1(" 사용자에 의해 일시정지 되었습니다. ");
                     }
-                    label_stat.Text = "작업중 일시정지";
+                    lbl_stat = "작업중 일시정지";
                     label_stat.ForeColor = Color.Gold;
-                    label_bar.BackColor = Color.Yellow;
-                    label_bar2.BackColor = Color.Yellow;
-                    Thread.Sleep(300);
-                    //listBox.BackColor = Color.Yellow;
-                    Thread.Sleep(200);
+                    lbl_pause.BackColor = Color.Yellow;
+                    //label_bar2.BackColor = Color.Yellow;
                 }
-                label_stat.Text = "";
+
+                this.Invoke(new Action(() =>
+                {
+                    label_stat.Text = lbl_stat;
+                    
+                }));
+                Thread.Sleep(700);
+
+                this.Invoke(new Action(() =>
+                {
+                    label_stat.Text = "";       
+                }));
+
+
+                lbl_start.BackColor = Color.Empty;
+                lbl_pause.BackColor = Color.Empty;
                 listBox.BackColor = Color.DarkGray;
                 label_bar.BackColor = Color.DarkSlateGray;
                 label_bar2.BackColor = Color.DarkSlateGray;
-                Thread.Sleep(500);
+                Thread.Sleep(300);
             }
-            label_stat.Text = "대    기    중";
+
+            this.Invoke(new Action(() =>
+            {
+                label_stat.Text = "대    기    중";
+            }));
             label_stat.ForeColor = Color.Black;
             label_stat.BackColor = Color.White;
 
@@ -1218,6 +1477,11 @@ namespace KES_1_for_LAN
         private void button11_Click_1(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            lan_read = "#GetIO,1\r\n";
         }
     }
 }

@@ -37,16 +37,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NPOI">
-      <HintPath>..\..\..\..\..\..\..\wwwroot\01.src\03.BIZ\Build\Resource\NPOI.dll</HintPath>
+      <HintPath>..\..\..\Users\user\Desktop\kes_dll\NPOI.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OOXML">
-      <HintPath>..\..\..\..\..\..\..\wwwroot\01.src\03.BIZ\Build\Resource\NPOI.OOXML.dll</HintPath>
+      <HintPath>..\..\..\Users\user\Desktop\kes_dll\NPOI.OOXML.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OpenXml4Net">
-      <HintPath>..\..\..\..\..\..\..\wwwroot\01.src\03.BIZ\Build\Resource\NPOI.OpenXml4Net.dll</HintPath>
+      <HintPath>..\..\..\Users\user\Desktop\kes_dll\NPOI.OpenXml4Net.dll</HintPath>
     </Reference>
     <Reference Include="NPOI.OpenXmlFormats">
-      <HintPath>..\..\..\..\..\..\..\wwwroot\01.src\03.BIZ\Build\Resource\NPOI.OpenXmlFormats.dll</HintPath>
+      <HintPath>..\..\..\Users\user\Desktop\kes_dll\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
