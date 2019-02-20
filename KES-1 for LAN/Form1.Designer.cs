@@ -87,7 +87,9 @@
             this.lbl_led_error = new System.Windows.Forms.Label();
             this.btnForm2 = new System.Windows.Forms.Button();
             this.btnExcelimport = new System.Windows.Forms.Button();
+            this.dgrData = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgrData)).BeginInit();
             this.SuspendLayout();
             // 
             // label_bar2
@@ -577,7 +579,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(59, 50);
             this.label12.TabIndex = 64;
-            this.label12.Text = "Warning";
+            this.label12.Text = "Warn";
             this.label12.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // label18
@@ -744,12 +746,23 @@
             this.btnExcelimport.Text = "좌표불러오기";
             this.btnExcelimport.UseVisualStyleBackColor = true;
             // 
+            // dgrData
+            // 
+            this.dgrData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgrData.Location = new System.Drawing.Point(43, 504);
+            this.dgrData.Name = "dgrData";
+            this.dgrData.RowTemplate.Height = 27;
+            this.dgrData.Size = new System.Drawing.Size(240, 150);
+            this.dgrData.TabIndex = 80;
+            this.dgrData.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(1152, 901);
+            this.Controls.Add(this.dgrData);
             this.Controls.Add(this.btnExcelimport);
             this.Controls.Add(this.btnForm2);
             this.Controls.Add(this.lbl_led_error);
@@ -813,6 +826,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgrData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -877,6 +891,7 @@
         private System.Windows.Forms.Label lbl_led_error;
         private System.Windows.Forms.Button btnForm2;
         private System.Windows.Forms.Button btnExcelimport;
+        private System.Windows.Forms.DataGridView dgrData;
     }
 }
 
