@@ -502,16 +502,17 @@ namespace KES_1_for_LAN
             Sendmsg_Lan(ecmd);
             send_N_check(10);
             Thread.Sleep(100);
+                        
+            ecmd = "$execute,\"On 11, 0.5, 0\"";
+            Sendmsg_Lan(ecmd);
+            send_N_check(10);
+            Thread.Sleep(50);
 
             ecmd = "$execute,\"Off 6\"";
             Sendmsg_Lan(ecmd);
             send_N_check(10);
             Thread.Sleep(100);
 
-            ecmd = "$execute,\"On 11, 0.5, 0\"";
-            Sendmsg_Lan(ecmd);
-            send_N_check(10);
-            Thread.Sleep(50);
 
             Start_btn.Enabled = true;
             task = "stop";
@@ -1243,6 +1244,11 @@ namespace KES_1_for_LAN
 
                     if (judge == "NG")
                     {
+                        this.Invoke(new Action(() =>
+                        {
+                            NGPoint_txt.Text = (i + 1).ToString();
+                        }));
+                        
                         ecmd = "$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")  :Z(0)\"";
                         Sendmsg_Lan(ecmd);
                         send_N_check(200);
@@ -1279,7 +1285,7 @@ namespace KES_1_for_LAN
 
             ecmd = "$execute,\"speed 60\"";
             Sendmsg_Lan(ecmd);
-            Console.WriteLine("$execute,\"speed 50\"");
+            Console.WriteLine("$execute,\"speed 60\"");
             send_N_check(500);            // 재시도 횟수 넣어준다.
             Thread.Sleep(200);
 
