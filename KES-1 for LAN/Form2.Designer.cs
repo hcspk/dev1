@@ -50,8 +50,8 @@
             this.btn_nx = new System.Windows.Forms.Button();
             this.btn_nz = new System.Windows.Forms.Button();
             this.btn_pz = new System.Windows.Forms.Button();
-            this.rob_group = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.grpBox_RobMov = new System.Windows.Forms.GroupBox();
+            this.chkBox_pwr = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.user_pitch_txt = new System.Windows.Forms.TextBox();
             this.usr_radiobtn = new System.Windows.Forms.RadioButton();
@@ -61,7 +61,7 @@
             this.btn_pu = new System.Windows.Forms.Button();
             this.btn_nu = new System.Windows.Forms.Button();
             this.btn_teach = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grpBox_Pos = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -70,16 +70,19 @@
             this.txtBox_z = new System.Windows.Forms.TextBox();
             this.txtBox_y = new System.Windows.Forms.TextBox();
             this.txtBox_x = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btn_move_all = new System.Windows.Forms.Button();
+            this.grpBox_PoChk = new System.Windows.Forms.GroupBox();
+            this.txtBox_Speed = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btn_jumpAll = new System.Windows.Forms.Button();
+            this.btn_moveAll = new System.Windows.Forms.Button();
             this.btn_move = new System.Windows.Forms.Button();
             this.btn_jump = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.txtBox_StopPos = new System.Windows.Forms.TextBox();
+            this.txtBox_StartPos = new System.Windows.Forms.TextBox();
             this.btn_emg_stop = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button15 = new System.Windows.Forms.Button();
-            this.btnState = new System.Windows.Forms.Button();
+            this.btn_save = new System.Windows.Forms.Button();
             this.btn_MtrOn = new System.Windows.Forms.Button();
             this.btn_MtrOff = new System.Windows.Forms.Button();
             this.btn_ErrRst = new System.Windows.Forms.Button();
@@ -101,10 +104,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.btn_FrmColse = new System.Windows.Forms.Button();
+            this.btn_load = new System.Windows.Forms.Button();
+            this.btn_delete = new System.Windows.Forms.Button();
+            this.btn_z_edit_row = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.rob_group.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.grpBox_RobMov.SuspendLayout();
+            this.grpBox_Pos.SuspendLayout();
+            this.grpBox_PoChk.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -142,6 +149,8 @@
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(780, 450);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyDown);
             // 
             // Skip
             // 
@@ -190,29 +199,29 @@
             // 
             // btn_insert
             // 
-            this.btn_insert.Location = new System.Drawing.Point(842, 36);
+            this.btn_insert.Location = new System.Drawing.Point(841, 36);
             this.btn_insert.Name = "btn_insert";
-            this.btn_insert.Size = new System.Drawing.Size(134, 41);
+            this.btn_insert.Size = new System.Drawing.Size(134, 40);
             this.btn_insert.TabIndex = 1;
-            this.btn_insert.Text = "Insert Point";
+            this.btn_insert.Text = "Add Point";
             this.btn_insert.UseVisualStyleBackColor = true;
             this.btn_insert.Click += new System.EventHandler(this.insert_btn_Click_1);
             // 
             // btn_z_edit
             // 
-            this.btn_z_edit.Location = new System.Drawing.Point(842, 95);
+            this.btn_z_edit.Location = new System.Drawing.Point(841, 268);
             this.btn_z_edit.Name = "btn_z_edit";
-            this.btn_z_edit.Size = new System.Drawing.Size(134, 42);
+            this.btn_z_edit.Size = new System.Drawing.Size(134, 40);
             this.btn_z_edit.TabIndex = 2;
-            this.btn_z_edit.Text = "Z Edit";
+            this.btn_z_edit.Text = "Z Edit All";
             this.btn_z_edit.UseVisualStyleBackColor = true;
-            this.btn_z_edit.Click += new System.EventHandler(this.data_btn_Click);
+            this.btn_z_edit.Click += new System.EventHandler(this.btn_z_edit_Click);
             // 
             // btn_teachmode
             // 
-            this.btn_teachmode.Location = new System.Drawing.Point(842, 450);
+            this.btn_teachmode.Location = new System.Drawing.Point(841, 444);
             this.btn_teachmode.Name = "btn_teachmode";
-            this.btn_teachmode.Size = new System.Drawing.Size(134, 36);
+            this.btn_teachmode.Size = new System.Drawing.Size(134, 40);
             this.btn_teachmode.TabIndex = 3;
             this.btn_teachmode.Text = "TEACH MODE";
             this.btn_teachmode.UseVisualStyleBackColor = true;
@@ -220,7 +229,7 @@
             // 
             // txtBox_z_fix
             // 
-            this.txtBox_z_fix.Location = new System.Drawing.Point(896, 146);
+            this.txtBox_z_fix.Location = new System.Drawing.Point(895, 241);
             this.txtBox_z_fix.Name = "txtBox_z_fix";
             this.txtBox_z_fix.Size = new System.Drawing.Size(79, 21);
             this.txtBox_z_fix.TabIndex = 4;
@@ -228,7 +237,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(846, 150);
+            this.label1.Location = new System.Drawing.Point(845, 246);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(49, 12);
             this.label1.TabIndex = 5;
@@ -294,39 +303,40 @@
             this.btn_pz.UseVisualStyleBackColor = true;
             this.btn_pz.Click += new System.EventHandler(this.btn_pz_Click);
             // 
-            // rob_group
+            // grpBox_RobMov
             // 
-            this.rob_group.Controls.Add(this.checkBox1);
-            this.rob_group.Controls.Add(this.label2);
-            this.rob_group.Controls.Add(this.user_pitch_txt);
-            this.rob_group.Controls.Add(this.usr_radiobtn);
-            this.rob_group.Controls.Add(this.m10_radiobtn);
-            this.rob_group.Controls.Add(this.m1_radiobtn);
-            this.rob_group.Controls.Add(this.m01_radiobtn);
-            this.rob_group.Controls.Add(this.btn_nx);
-            this.rob_group.Controls.Add(this.btn_pz);
-            this.rob_group.Controls.Add(this.btn_py);
-            this.rob_group.Controls.Add(this.btn_pu);
-            this.rob_group.Controls.Add(this.btn_nu);
-            this.rob_group.Controls.Add(this.btn_nz);
-            this.rob_group.Controls.Add(this.btn_ny);
-            this.rob_group.Controls.Add(this.btn_px);
-            this.rob_group.Location = new System.Drawing.Point(611, 501);
-            this.rob_group.Name = "rob_group";
-            this.rob_group.Size = new System.Drawing.Size(364, 189);
-            this.rob_group.TabIndex = 7;
-            this.rob_group.TabStop = false;
-            this.rob_group.Text = "ROBOT MOVE";
+            this.grpBox_RobMov.Controls.Add(this.chkBox_pwr);
+            this.grpBox_RobMov.Controls.Add(this.label2);
+            this.grpBox_RobMov.Controls.Add(this.user_pitch_txt);
+            this.grpBox_RobMov.Controls.Add(this.usr_radiobtn);
+            this.grpBox_RobMov.Controls.Add(this.m10_radiobtn);
+            this.grpBox_RobMov.Controls.Add(this.m1_radiobtn);
+            this.grpBox_RobMov.Controls.Add(this.m01_radiobtn);
+            this.grpBox_RobMov.Controls.Add(this.btn_nx);
+            this.grpBox_RobMov.Controls.Add(this.btn_pz);
+            this.grpBox_RobMov.Controls.Add(this.btn_py);
+            this.grpBox_RobMov.Controls.Add(this.btn_pu);
+            this.grpBox_RobMov.Controls.Add(this.btn_nu);
+            this.grpBox_RobMov.Controls.Add(this.btn_nz);
+            this.grpBox_RobMov.Controls.Add(this.btn_ny);
+            this.grpBox_RobMov.Controls.Add(this.btn_px);
+            this.grpBox_RobMov.Location = new System.Drawing.Point(611, 501);
+            this.grpBox_RobMov.Name = "grpBox_RobMov";
+            this.grpBox_RobMov.Size = new System.Drawing.Size(364, 189);
+            this.grpBox_RobMov.TabIndex = 7;
+            this.grpBox_RobMov.TabStop = false;
+            this.grpBox_RobMov.Text = "ROBOT MOVE";
             // 
-            // checkBox1
+            // chkBox_pwr
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 14);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(75, 16);
-            this.checkBox1.TabIndex = 81;
-            this.checkBox1.Text = "Speed HI";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkBox_pwr.AutoSize = true;
+            this.chkBox_pwr.Location = new System.Drawing.Point(6, 14);
+            this.chkBox_pwr.Name = "chkBox_pwr";
+            this.chkBox_pwr.Size = new System.Drawing.Size(75, 16);
+            this.chkBox_pwr.TabIndex = 81;
+            this.chkBox_pwr.Text = "Power HI";
+            this.chkBox_pwr.UseVisualStyleBackColor = true;
+            this.chkBox_pwr.CheckedChanged += new System.EventHandler(this.chkBox_pwr_CheckedChanged);
             // 
             // label2
             // 
@@ -416,28 +426,28 @@
             this.btn_teach.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.btn_teach.Location = new System.Drawing.Point(611, 693);
             this.btn_teach.Name = "btn_teach";
-            this.btn_teach.Size = new System.Drawing.Size(121, 42);
+            this.btn_teach.Size = new System.Drawing.Size(114, 42);
             this.btn_teach.TabIndex = 8;
             this.btn_teach.Text = "TEACH";
             this.btn_teach.UseVisualStyleBackColor = false;
             this.btn_teach.Click += new System.EventHandler(this.btn_teach_Click);
             // 
-            // groupBox2
+            // grpBox_Pos
             // 
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.txtBox_u);
-            this.groupBox2.Controls.Add(this.txtBox_z);
-            this.groupBox2.Controls.Add(this.txtBox_y);
-            this.groupBox2.Controls.Add(this.txtBox_x);
-            this.groupBox2.Location = new System.Drawing.Point(272, 501);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(333, 57);
-            this.groupBox2.TabIndex = 9;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "CURRENT POSITION";
+            this.grpBox_Pos.Controls.Add(this.label6);
+            this.grpBox_Pos.Controls.Add(this.label5);
+            this.grpBox_Pos.Controls.Add(this.label4);
+            this.grpBox_Pos.Controls.Add(this.label3);
+            this.grpBox_Pos.Controls.Add(this.txtBox_u);
+            this.grpBox_Pos.Controls.Add(this.txtBox_z);
+            this.grpBox_Pos.Controls.Add(this.txtBox_y);
+            this.grpBox_Pos.Controls.Add(this.txtBox_x);
+            this.grpBox_Pos.Location = new System.Drawing.Point(272, 501);
+            this.grpBox_Pos.Name = "grpBox_Pos";
+            this.grpBox_Pos.Size = new System.Drawing.Size(333, 57);
+            this.grpBox_Pos.TabIndex = 9;
+            this.grpBox_Pos.TabStop = false;
+            this.grpBox_Pos.Text = "CURRENT POSITION";
             // 
             // label6
             // 
@@ -503,106 +513,148 @@
             this.txtBox_x.Size = new System.Drawing.Size(70, 21);
             this.txtBox_x.TabIndex = 0;
             // 
-            // groupBox3
+            // grpBox_PoChk
             // 
-            this.groupBox3.Controls.Add(this.btn_move_all);
-            this.groupBox3.Controls.Add(this.btn_move);
-            this.groupBox3.Controls.Add(this.btn_jump);
-            this.groupBox3.Controls.Add(this.textBox7);
-            this.groupBox3.Location = new System.Drawing.Point(272, 571);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(333, 67);
-            this.groupBox3.TabIndex = 10;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "POINT CHECK";
+            this.grpBox_PoChk.Controls.Add(this.txtBox_Speed);
+            this.grpBox_PoChk.Controls.Add(this.label7);
+            this.grpBox_PoChk.Controls.Add(this.label8);
+            this.grpBox_PoChk.Controls.Add(this.btn_jumpAll);
+            this.grpBox_PoChk.Controls.Add(this.btn_moveAll);
+            this.grpBox_PoChk.Controls.Add(this.btn_move);
+            this.grpBox_PoChk.Controls.Add(this.btn_jump);
+            this.grpBox_PoChk.Controls.Add(this.txtBox_StopPos);
+            this.grpBox_PoChk.Controls.Add(this.txtBox_StartPos);
+            this.grpBox_PoChk.Location = new System.Drawing.Point(272, 566);
+            this.grpBox_PoChk.Name = "grpBox_PoChk";
+            this.grpBox_PoChk.Size = new System.Drawing.Size(333, 83);
+            this.grpBox_PoChk.TabIndex = 10;
+            this.grpBox_PoChk.TabStop = false;
+            this.grpBox_PoChk.Text = "POINT CHECK";
             // 
-            // btn_move_all
+            // txtBox_Speed
             // 
-            this.btn_move_all.Location = new System.Drawing.Point(246, 20);
-            this.btn_move_all.Name = "btn_move_all";
-            this.btn_move_all.Size = new System.Drawing.Size(80, 35);
-            this.btn_move_all.TabIndex = 1;
-            this.btn_move_all.Text = "MOVE ALL";
-            this.btn_move_all.UseVisualStyleBackColor = true;
+            this.txtBox_Speed.Font = new System.Drawing.Font("굴림", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.txtBox_Speed.Location = new System.Drawing.Point(99, 49);
+            this.txtBox_Speed.Name = "txtBox_Speed";
+            this.txtBox_Speed.Size = new System.Drawing.Size(60, 27);
+            this.txtBox_Speed.TabIndex = 3;
+            this.txtBox_Speed.Text = "30";
+            this.txtBox_Speed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBox_Speed.TextChanged += new System.EventHandler(this.txtBox_Speed_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label7.Location = new System.Drawing.Point(78, 28);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(15, 12);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "~";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.label8.Location = new System.Drawing.Point(8, 58);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(84, 12);
+            this.label8.TabIndex = 2;
+            this.label8.Text = "Speed (%) :";
+            // 
+            // btn_jumpAll
+            // 
+            this.btn_jumpAll.Location = new System.Drawing.Point(244, 19);
+            this.btn_jumpAll.Name = "btn_jumpAll";
+            this.btn_jumpAll.Size = new System.Drawing.Size(83, 25);
+            this.btn_jumpAll.TabIndex = 1;
+            this.btn_jumpAll.Text = "JUMP ALL";
+            this.btn_jumpAll.UseVisualStyleBackColor = true;
+            this.btn_jumpAll.Click += new System.EventHandler(this.btn_jumpAll_Click);
+            // 
+            // btn_moveAll
+            // 
+            this.btn_moveAll.Location = new System.Drawing.Point(244, 50);
+            this.btn_moveAll.Name = "btn_moveAll";
+            this.btn_moveAll.Size = new System.Drawing.Size(83, 25);
+            this.btn_moveAll.TabIndex = 1;
+            this.btn_moveAll.Text = "MOVE ALL";
+            this.btn_moveAll.UseVisualStyleBackColor = true;
+            this.btn_moveAll.Click += new System.EventHandler(this.btn_moveAll_Click);
             // 
             // btn_move
             // 
-            this.btn_move.Location = new System.Drawing.Point(160, 20);
+            this.btn_move.Location = new System.Drawing.Point(169, 50);
             this.btn_move.Name = "btn_move";
-            this.btn_move.Size = new System.Drawing.Size(80, 35);
+            this.btn_move.Size = new System.Drawing.Size(70, 25);
             this.btn_move.TabIndex = 1;
             this.btn_move.Text = "MOVE";
             this.btn_move.UseVisualStyleBackColor = true;
+            this.btn_move.Click += new System.EventHandler(this.btn_move_Click);
             // 
             // btn_jump
             // 
-            this.btn_jump.Location = new System.Drawing.Point(74, 20);
+            this.btn_jump.Location = new System.Drawing.Point(169, 19);
             this.btn_jump.Name = "btn_jump";
-            this.btn_jump.Size = new System.Drawing.Size(80, 35);
+            this.btn_jump.Size = new System.Drawing.Size(70, 25);
             this.btn_jump.TabIndex = 1;
             this.btn_jump.Text = "JUMP";
             this.btn_jump.UseVisualStyleBackColor = true;
+            this.btn_jump.Click += new System.EventHandler(this.btn_jump_Click);
             // 
-            // textBox7
+            // txtBox_StopPos
             // 
-            this.textBox7.Font = new System.Drawing.Font("굴림", 17F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.textBox7.Location = new System.Drawing.Point(9, 20);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(60, 34);
-            this.textBox7.TabIndex = 0;
-            this.textBox7.Text = "0";
-            this.textBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBox_StopPos.Font = new System.Drawing.Font("굴림", 13F, System.Drawing.FontStyle.Bold);
+            this.txtBox_StopPos.Location = new System.Drawing.Point(99, 19);
+            this.txtBox_StopPos.Name = "txtBox_StopPos";
+            this.txtBox_StopPos.Size = new System.Drawing.Size(60, 27);
+            this.txtBox_StopPos.TabIndex = 0;
+            this.txtBox_StopPos.Text = "0";
+            this.txtBox_StopPos.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBox_StopPos.TextChanged += new System.EventHandler(this.txtBox_StopPos_TextChanged);
+            // 
+            // txtBox_StartPos
+            // 
+            this.txtBox_StartPos.Font = new System.Drawing.Font("굴림", 13F, System.Drawing.FontStyle.Bold);
+            this.txtBox_StartPos.Location = new System.Drawing.Point(9, 19);
+            this.txtBox_StartPos.Name = "txtBox_StartPos";
+            this.txtBox_StartPos.Size = new System.Drawing.Size(60, 27);
+            this.txtBox_StartPos.TabIndex = 0;
+            this.txtBox_StartPos.Text = "0";
+            this.txtBox_StartPos.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btn_emg_stop
             // 
             this.btn_emg_stop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btn_emg_stop.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btn_emg_stop.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.btn_emg_stop.Location = new System.Drawing.Point(738, 693);
+            this.btn_emg_stop.Location = new System.Drawing.Point(730, 693);
             this.btn_emg_stop.Name = "btn_emg_stop";
-            this.btn_emg_stop.Size = new System.Drawing.Size(237, 42);
+            this.btn_emg_stop.Size = new System.Drawing.Size(178, 42);
             this.btn_emg_stop.TabIndex = 11;
             this.btn_emg_stop.Text = "EMERGENCY STOP";
             this.btn_emg_stop.UseVisualStyleBackColor = false;
+            this.btn_emg_stop.Click += new System.EventHandler(this.btn_emg_stop_Click);
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::KES_1_for_LAN.Properties.Resources.x0y0;
-            this.pictureBox1.Location = new System.Drawing.Point(41, 486);
+            this.pictureBox1.Location = new System.Drawing.Point(41, 507);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(225, 204);
+            this.pictureBox1.Size = new System.Drawing.Size(225, 182);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             // 
-            // groupBox1
+            // btn_save
             // 
-            this.groupBox1.Location = new System.Drawing.Point(842, 252);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(133, 187);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
-            // 
-            // button15
-            // 
-            this.button15.Location = new System.Drawing.Point(837, 197);
-            this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(96, 40);
-            this.button15.TabIndex = 14;
-            this.button15.Text = "button15";
-            this.button15.UseVisualStyleBackColor = true;
-            this.button15.Click += new System.EventHandler(this.button15_Click);
-            // 
-            // btnState
-            // 
-            this.btnState.Location = new System.Drawing.Point(41, 5);
-            this.btnState.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnState.Name = "btnState";
-            this.btnState.Size = new System.Drawing.Size(109, 26);
-            this.btnState.TabIndex = 80;
-            this.btnState.Text = " state";
-            this.btnState.UseVisualStyleBackColor = true;
+            this.btn_save.Location = new System.Drawing.Point(841, 130);
+            this.btn_save.Name = "btn_save";
+            this.btn_save.Size = new System.Drawing.Size(134, 40);
+            this.btn_save.TabIndex = 14;
+            this.btn_save.Text = "Save Point";
+            this.btn_save.UseVisualStyleBackColor = true;
+            this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
             // 
             // btn_MtrOn
             // 
@@ -653,7 +705,7 @@
             // lbl_led_safty
             // 
             this.lbl_led_safty.BackColor = System.Drawing.Color.Yellow;
-            this.lbl_led_safty.Location = new System.Drawing.Point(427, 700);
+            this.lbl_led_safty.Location = new System.Drawing.Point(363, 700);
             this.lbl_led_safty.Name = "lbl_led_safty";
             this.lbl_led_safty.Size = new System.Drawing.Size(44, 16);
             this.lbl_led_safty.TabIndex = 95;
@@ -661,7 +713,7 @@
             // lbl_led_serror
             // 
             this.lbl_led_serror.BackColor = System.Drawing.Color.Red;
-            this.lbl_led_serror.Location = new System.Drawing.Point(363, 700);
+            this.lbl_led_serror.Location = new System.Drawing.Point(425, 700);
             this.lbl_led_serror.Name = "lbl_led_serror";
             this.lbl_led_serror.Size = new System.Drawing.Size(44, 16);
             this.lbl_led_serror.TabIndex = 94;
@@ -685,7 +737,7 @@
             // lbl_led_run
             // 
             this.lbl_led_run.BackColor = System.Drawing.Color.GreenYellow;
-            this.lbl_led_run.Location = new System.Drawing.Point(175, 700);
+            this.lbl_led_run.Location = new System.Drawing.Point(174, 700);
             this.lbl_led_run.Name = "lbl_led_run";
             this.lbl_led_run.Size = new System.Drawing.Size(44, 16);
             this.lbl_led_run.TabIndex = 91;
@@ -693,7 +745,7 @@
             // lbl_led_ready
             // 
             this.lbl_led_ready.BackColor = System.Drawing.Color.GreenYellow;
-            this.lbl_led_ready.Location = new System.Drawing.Point(112, 700);
+            this.lbl_led_ready.Location = new System.Drawing.Point(111, 700);
             this.lbl_led_ready.Name = "lbl_led_ready";
             this.lbl_led_ready.Size = new System.Drawing.Size(44, 16);
             this.lbl_led_ready.TabIndex = 97;
@@ -711,6 +763,7 @@
             this.label23.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label23.Location = new System.Drawing.Point(167, 693);
             this.label23.Name = "label23";
+            this.label23.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label23.Size = new System.Drawing.Size(58, 42);
             this.label23.TabIndex = 88;
             this.label23.Text = "Run";
@@ -721,6 +774,7 @@
             this.label22.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label22.Location = new System.Drawing.Point(230, 693);
             this.label22.Name = "label22";
+            this.label22.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label22.Size = new System.Drawing.Size(58, 42);
             this.label22.TabIndex = 87;
             this.label22.Text = "Paused";
@@ -731,6 +785,7 @@
             this.label21.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label21.Location = new System.Drawing.Point(545, 693);
             this.label21.Name = "label21";
+            this.label21.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label21.Size = new System.Drawing.Size(58, 42);
             this.label21.TabIndex = 86;
             this.label21.Text = "Error";
@@ -741,6 +796,7 @@
             this.lbl_led_es.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.lbl_led_es.Location = new System.Drawing.Point(482, 693);
             this.lbl_led_es.Name = "lbl_led_es";
+            this.lbl_led_es.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.lbl_led_es.Size = new System.Drawing.Size(58, 42);
             this.lbl_led_es.TabIndex = 85;
             this.lbl_led_es.Text = "EStop";
@@ -749,8 +805,9 @@
             // lbl_led_sa
             // 
             this.lbl_led_sa.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.lbl_led_sa.Location = new System.Drawing.Point(419, 693);
+            this.lbl_led_sa.Location = new System.Drawing.Point(356, 693);
             this.lbl_led_sa.Name = "lbl_led_sa";
+            this.lbl_led_sa.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.lbl_led_sa.Size = new System.Drawing.Size(58, 42);
             this.lbl_led_sa.TabIndex = 84;
             this.lbl_led_sa.Text = "Safty";
@@ -759,8 +816,9 @@
             // label18
             // 
             this.label18.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.label18.Location = new System.Drawing.Point(356, 693);
+            this.label18.Location = new System.Drawing.Point(418, 693);
             this.label18.Name = "label18";
+            this.label18.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label18.Size = new System.Drawing.Size(58, 42);
             this.label18.TabIndex = 83;
             this.label18.Text = "SError";
@@ -771,6 +829,7 @@
             this.label12.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label12.Location = new System.Drawing.Point(293, 693);
             this.label12.Name = "label12";
+            this.label12.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label12.Size = new System.Drawing.Size(58, 42);
             this.label12.TabIndex = 82;
             this.label12.Text = "Warning";
@@ -781,6 +840,7 @@
             this.label24.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label24.Location = new System.Drawing.Point(104, 693);
             this.label24.Name = "label24";
+            this.label24.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label24.Size = new System.Drawing.Size(58, 42);
             this.label24.TabIndex = 89;
             this.label24.Text = "Ready";
@@ -791,10 +851,54 @@
             this.label10.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.label10.Location = new System.Drawing.Point(41, 693);
             this.label10.Name = "label10";
+            this.label10.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
             this.label10.Size = new System.Drawing.Size(58, 42);
             this.label10.TabIndex = 81;
             this.label10.Text = "Auto";
             this.label10.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // btn_FrmColse
+            // 
+            this.btn_FrmColse.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_FrmColse.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_FrmColse.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.btn_FrmColse.Location = new System.Drawing.Point(914, 693);
+            this.btn_FrmColse.Name = "btn_FrmColse";
+            this.btn_FrmColse.Size = new System.Drawing.Size(62, 42);
+            this.btn_FrmColse.TabIndex = 99;
+            this.btn_FrmColse.Text = "CLOSE";
+            this.btn_FrmColse.UseVisualStyleBackColor = false;
+            this.btn_FrmColse.Click += new System.EventHandler(this.btn_FrmColse_Click);
+            // 
+            // btn_load
+            // 
+            this.btn_load.Location = new System.Drawing.Point(841, 176);
+            this.btn_load.Name = "btn_load";
+            this.btn_load.Size = new System.Drawing.Size(134, 40);
+            this.btn_load.TabIndex = 14;
+            this.btn_load.Text = "Load Point";
+            this.btn_load.UseVisualStyleBackColor = true;
+            this.btn_load.Click += new System.EventHandler(this.btn_load_Click);
+            // 
+            // btn_delete
+            // 
+            this.btn_delete.Location = new System.Drawing.Point(841, 83);
+            this.btn_delete.Name = "btn_delete";
+            this.btn_delete.Size = new System.Drawing.Size(134, 40);
+            this.btn_delete.TabIndex = 1;
+            this.btn_delete.Text = "Delete Point";
+            this.btn_delete.UseVisualStyleBackColor = true;
+            this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
+            // 
+            // btn_z_edit_row
+            // 
+            this.btn_z_edit_row.Location = new System.Drawing.Point(841, 314);
+            this.btn_z_edit_row.Name = "btn_z_edit_row";
+            this.btn_z_edit_row.Size = new System.Drawing.Size(134, 40);
+            this.btn_z_edit_row.TabIndex = 2;
+            this.btn_z_edit_row.Text = "Z Edit Row";
+            this.btn_z_edit_row.UseVisualStyleBackColor = true;
+            this.btn_z_edit_row.Click += new System.EventHandler(this.btn_z_edit_row_Click);
             // 
             // Form2
             // 
@@ -802,6 +906,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSlateGray;
             this.ClientSize = new System.Drawing.Size(1008, 744);
+            this.Controls.Add(this.btn_FrmColse);
             this.Controls.Add(this.lbl_led_error);
             this.Controls.Add(this.lbl_led_estop);
             this.Controls.Add(this.lbl_led_safty);
@@ -821,21 +926,22 @@
             this.Controls.Add(this.label24);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.btn_ErrRst);
-            this.Controls.Add(this.btnState);
             this.Controls.Add(this.btn_MtrOff);
-            this.Controls.Add(this.button15);
+            this.Controls.Add(this.btn_load);
+            this.Controls.Add(this.btn_save);
             this.Controls.Add(this.btn_MtrOn);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btn_emg_stop);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.grpBox_PoChk);
+            this.Controls.Add(this.grpBox_Pos);
             this.Controls.Add(this.btn_teach);
-            this.Controls.Add(this.rob_group);
+            this.Controls.Add(this.grpBox_RobMov);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtBox_z_fix);
             this.Controls.Add(this.btn_teachmode);
+            this.Controls.Add(this.btn_z_edit_row);
             this.Controls.Add(this.btn_z_edit);
+            this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_insert);
             this.Controls.Add(this.dataGridView1);
             this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -843,12 +949,12 @@
             this.Text = "Form2";
             this.Load += new System.EventHandler(this.point_list_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.rob_group.ResumeLayout(false);
-            this.rob_group.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
+            this.grpBox_RobMov.ResumeLayout(false);
+            this.grpBox_RobMov.PerformLayout();
+            this.grpBox_Pos.ResumeLayout(false);
+            this.grpBox_Pos.PerformLayout();
+            this.grpBox_PoChk.ResumeLayout(false);
+            this.grpBox_PoChk.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -877,7 +983,7 @@
         private System.Windows.Forms.Button btn_nx;
         private System.Windows.Forms.Button btn_nz;
         private System.Windows.Forms.Button btn_pz;
-        private System.Windows.Forms.GroupBox rob_group;
+        private System.Windows.Forms.GroupBox grpBox_RobMov;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox user_pitch_txt;
         private System.Windows.Forms.RadioButton usr_radiobtn;
@@ -885,7 +991,7 @@
         private System.Windows.Forms.RadioButton m1_radiobtn;
         private System.Windows.Forms.RadioButton m01_radiobtn;
         private System.Windows.Forms.Button btn_teach;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox grpBox_Pos;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -894,22 +1000,20 @@
         private System.Windows.Forms.TextBox txtBox_z;
         private System.Windows.Forms.TextBox txtBox_y;
         private System.Windows.Forms.TextBox txtBox_x;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox grpBox_PoChk;
         private System.Windows.Forms.Button btn_move;
         private System.Windows.Forms.Button btn_jump;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.Button btn_move_all;
+        private System.Windows.Forms.TextBox txtBox_StartPos;
+        private System.Windows.Forms.Button btn_moveAll;
         private System.Windows.Forms.Button btn_emg_stop;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btn_pu;
         private System.Windows.Forms.Button btn_nu;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button15;
-        private System.Windows.Forms.Button btnState;
+        private System.Windows.Forms.Button btn_save;
         private System.Windows.Forms.Button btn_ErrRst;
         private System.Windows.Forms.Button btn_MtrOff;
         private System.Windows.Forms.Button btn_MtrOn;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkBox_pwr;
         private System.Windows.Forms.Label lbl_led_error;
         private System.Windows.Forms.Label lbl_led_estop;
         private System.Windows.Forms.Label lbl_led_safty;
@@ -928,5 +1032,14 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btn_FrmColse;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btn_jumpAll;
+        private System.Windows.Forms.TextBox txtBox_StopPos;
+        private System.Windows.Forms.TextBox txtBox_Speed;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btn_load;
+        private System.Windows.Forms.Button btn_delete;
+        private System.Windows.Forms.Button btn_z_edit_row;
     }
 }
