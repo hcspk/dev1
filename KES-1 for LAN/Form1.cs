@@ -535,6 +535,7 @@ namespace KES_1_for_LAN
             if (MessageBox.Show("모든 설정이 초기화되며 로봇이 HOME 으로 이동합니다. \n\r 초기화하지 않으려면 아니오(N)를 눌러 주세요!!", "설정 초기화 및 로봇 HOME 복귀", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 Target = 0; Current = 0; ActTime = 0; NGTime = 0; NGPoint = 0; TimeSpen = 0; progressBar1.Value = 0;
+                start_txt.Text = "1";
                 Target_txt.Text = Target.ToString();
                 Current_txt.Text = Current.ToString();
                 Time_txt.Text = string.Format("{0:#0.0}", ActTime);
@@ -1039,10 +1040,10 @@ namespace KES_1_for_LAN
             Thread.Sleep(300);
 
             Current = int.Parse(Current_txt.Text);
-            if (Current == 0)
+            if (this.start_txt.Text == "1")
             { Current = 1; }
             else
-            { Current = int.Parse(Current_txt.Text);
+            { Current = int.Parse(this.start_txt.Text);
             }
                        
             tar_val = (Target - Current) + 1;
