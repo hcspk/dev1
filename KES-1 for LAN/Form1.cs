@@ -546,30 +546,40 @@ namespace KES_1_for_LAN
 
             task = "stop";
 
+            ecmd = "$Reset";
+            Sendmsg_Lan(ecmd);
+            send_N_check(100);
+            Thread.Sleep(50);
+            
+            ecmd = "$SetMotorsOn,1";
+            Sendmsg_Lan(ecmd);
+            send_N_check(100);
+            Thread.Sleep(500);
+
+            ecmd = "$execute,\"Jump HOME1\"";
+            Sendmsg_Lan(ecmd);
+            send_N_check(200);
+            Thread.Sleep(200);
+
             ecmd = "$Stop";
             Sendmsg_Lan(ecmd);
-            send_N_check(10);
+            send_N_check(100);
             Thread.Sleep(50);
 
             ecmd = "$Abort";
             Sendmsg_Lan(ecmd);
-            send_N_check(10);
+            send_N_check(100);
             Thread.Sleep(50);
             Start_btn.Enabled = true;
 
-            ecmd = "$Reset";
-            Sendmsg_Lan(ecmd);
-            send_N_check(10);
-            Thread.Sleep(50);
-
             ecmd = "$SetMotorsOff,1";
             Sendmsg_Lan(ecmd);
-            send_N_check(10);
+            send_N_check(100);
             Thread.Sleep(50);
 
             ecmd = "$execute,\"On 11, 0.5, 0\"";
             Sendmsg_Lan(ecmd);
-            send_N_check(10);
+            send_N_check(100);
             Thread.Sleep(50);
 
             if (task == "com_fail")
@@ -706,23 +716,13 @@ namespace KES_1_for_LAN
                 byte[] buff = new byte[1024];
                 n = sock.Receive(buff);
                 string output = Encoding.ASCII.GetString(buff, 0, n);
-                //lan_read = output;
                 Form2.lan_read2 = output;
-                //Console.WriteLine("[" + n + "] bytes Received!!: " + output);
+                Console.WriteLine("[" + n + "] bytes Received!!: " + output);
                 if (output.Length > 10)
                 {
                     if (output.Substring(0, 10) == "#GetStatus")
                     {
-                        //Console.WriteLine("Robot: " + lan_read);
-                        stat_all = output;
-                        //lan_read = "";
-                        //if (stat_all != (string)listBox_cmd.Items[1])   <<----- 숙제....
-                        {
-                            this.Invoke(new Action(() =>
-                            {
-                             
-                            }));
-                        }
+                        stat_all = output;                        
                     }
                     else
                     {
@@ -738,7 +738,7 @@ namespace KES_1_for_LAN
             }
             if (sock_stat == "normal")
             { goto read_loop; }
-            //Console.WriteLine("read_buff()종료");
+            
         }
 
         
@@ -910,14 +910,14 @@ namespace KES_1_for_LAN
             send_again:
             if (lan_read.Substring(0,4) == ("#" + ecmd.Substring(1, 3)) )                 //  "$Abort" 에 대한 응답(\r\n 은 종료문자) 
             {
-                Console.WriteLine("lan_read = true ");
+                Console.WriteLine("lan_read = true " + ecmd + "  " + lan_read);
                 return;
             }
             else if (trycnt < cnt)
             {
                 Thread.Sleep(50);
                 trycnt++;
-                Console.WriteLine("lan_read = true " + trycnt);
+                Console.WriteLine("lan_read = false " + trycnt +"  "+ ecmd + "  " + lan_read);
                 goto send_again;
             }
             else
