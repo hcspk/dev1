@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Skip = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.No = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -108,6 +108,8 @@
             this.btn_load = new System.Windows.Forms.Button();
             this.btn_delete = new System.Windows.Forms.Button();
             this.btn_z_edit_row = new System.Windows.Forms.Button();
+            this.btn_AirOn = new System.Windows.Forms.Button();
+            this.btn_AirOff = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.grpBox_RobMov.SuspendLayout();
             this.grpBox_Pos.SuspendLayout();
@@ -117,14 +119,14 @@
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Skip,
@@ -135,14 +137,14 @@
             this.z,
             this.u,
             this.hand});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Location = new System.Drawing.Point(41, 36);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
@@ -658,32 +660,38 @@
             // 
             // btn_MtrOn
             // 
-            this.btn_MtrOn.Location = new System.Drawing.Point(272, 652);
+            this.btn_MtrOn.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_MtrOn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_MtrOn.Location = new System.Drawing.Point(271, 652);
             this.btn_MtrOn.Name = "btn_MtrOn";
-            this.btn_MtrOn.Size = new System.Drawing.Size(100, 35);
+            this.btn_MtrOn.Size = new System.Drawing.Size(68, 35);
             this.btn_MtrOn.TabIndex = 13;
             this.btn_MtrOn.Text = "Motor ON";
-            this.btn_MtrOn.UseVisualStyleBackColor = true;
+            this.btn_MtrOn.UseVisualStyleBackColor = false;
             this.btn_MtrOn.Click += new System.EventHandler(this.btn_MtrOn_Click);
             // 
             // btn_MtrOff
             // 
-            this.btn_MtrOff.Location = new System.Drawing.Point(389, 652);
+            this.btn_MtrOff.BackColor = System.Drawing.Color.SteelBlue;
+            this.btn_MtrOff.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_MtrOff.Location = new System.Drawing.Point(341, 652);
             this.btn_MtrOff.Name = "btn_MtrOff";
-            this.btn_MtrOff.Size = new System.Drawing.Size(100, 35);
+            this.btn_MtrOff.Size = new System.Drawing.Size(68, 35);
             this.btn_MtrOff.TabIndex = 13;
             this.btn_MtrOff.Text = "Motor Off";
-            this.btn_MtrOff.UseVisualStyleBackColor = true;
+            this.btn_MtrOff.UseVisualStyleBackColor = false;
             this.btn_MtrOff.Click += new System.EventHandler(this.btn_MtrOff_Click);
             // 
             // btn_ErrRst
             // 
-            this.btn_ErrRst.Location = new System.Drawing.Point(506, 652);
+            this.btn_ErrRst.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.btn_ErrRst.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_ErrRst.Location = new System.Drawing.Point(539, 652);
             this.btn_ErrRst.Name = "btn_ErrRst";
-            this.btn_ErrRst.Size = new System.Drawing.Size(100, 35);
+            this.btn_ErrRst.Size = new System.Drawing.Size(68, 35);
             this.btn_ErrRst.TabIndex = 13;
             this.btn_ErrRst.Text = "Err Reset";
-            this.btn_ErrRst.UseVisualStyleBackColor = true;
+            this.btn_ErrRst.UseVisualStyleBackColor = false;
             this.btn_ErrRst.Click += new System.EventHandler(this.btn_ErrRst_Click);
             // 
             // lbl_led_error
@@ -900,12 +908,38 @@
             this.btn_z_edit_row.UseVisualStyleBackColor = true;
             this.btn_z_edit_row.Click += new System.EventHandler(this.btn_z_edit_row_Click);
             // 
+            // btn_AirOn
+            // 
+            this.btn_AirOn.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_AirOn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_AirOn.Location = new System.Drawing.Point(413, 652);
+            this.btn_AirOn.Name = "btn_AirOn";
+            this.btn_AirOn.Size = new System.Drawing.Size(60, 35);
+            this.btn_AirOn.TabIndex = 100;
+            this.btn_AirOn.Text = "Air ON";
+            this.btn_AirOn.UseVisualStyleBackColor = false;
+            this.btn_AirOn.Click += new System.EventHandler(this.btn_AirOn_Click);
+            // 
+            // btn_AirOff
+            // 
+            this.btn_AirOff.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_AirOff.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_AirOff.Location = new System.Drawing.Point(475, 652);
+            this.btn_AirOff.Name = "btn_AirOff";
+            this.btn_AirOff.Size = new System.Drawing.Size(60, 35);
+            this.btn_AirOff.TabIndex = 100;
+            this.btn_AirOff.Text = "Air Off";
+            this.btn_AirOff.UseVisualStyleBackColor = false;
+            this.btn_AirOff.Click += new System.EventHandler(this.btn_AirOff_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSlateGray;
             this.ClientSize = new System.Drawing.Size(1008, 744);
+            this.Controls.Add(this.btn_AirOff);
+            this.Controls.Add(this.btn_AirOn);
             this.Controls.Add(this.btn_FrmColse);
             this.Controls.Add(this.lbl_led_error);
             this.Controls.Add(this.lbl_led_estop);
@@ -1041,5 +1075,7 @@
         private System.Windows.Forms.Button btn_load;
         private System.Windows.Forms.Button btn_delete;
         private System.Windows.Forms.Button btn_z_edit_row;
+        private System.Windows.Forms.Button btn_AirOn;
+        private System.Windows.Forms.Button btn_AirOff;
     }
 }

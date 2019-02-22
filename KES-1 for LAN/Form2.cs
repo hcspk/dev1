@@ -1015,5 +1015,19 @@ namespace KES_1_for_LAN
 
 
         }
+
+        private void btn_AirOn_Click(object sender, EventArgs e)
+        {
+            string ecmd = "$execute,\"On 6\"";
+            Sndmsg_Lan(ecmd);
+            //send_N_check(50);
+            //Thread.Sleep(500);
+        }
+
+        private void btn_AirOff_Click(object sender, EventArgs e)
+        {
+            string ecmd = "$execute,\"Off 6\"";
+            Sndmsg_Lan(ecmd);
+                    }
     }
 }
