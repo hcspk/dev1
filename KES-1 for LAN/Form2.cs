@@ -84,12 +84,7 @@ namespace KES_1_for_LAN
         
         private void point_list_Load(object sender, EventArgs e)
         {
-            //============================================================이 부분부터는 IP통신을 위한
-                        
-            string c2 = "시작입니다....!!!!!!!!!!!!!";
-            Console.WriteLine("String: {0}", c2);
-            //Robot_Status();
-
+            
             lbl_led_auto.BackColor = Color.Empty;
             lbl_led_ready.BackColor = Color.Empty;
             lbl_led_run.BackColor = Color.Empty;
@@ -108,14 +103,13 @@ namespace KES_1_for_LAN
         }
         private void btn_load_Click(object sender, EventArgs e)
         {
-            //string path = "D:\test\test.xslx";
-
+            
             Excel.Application xlApp = null;
             Excel.Workbook xlWorkbook = null;
             Excel.Worksheet xlWorksheet = null;
 
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Excel File (*.xlsx)|*.xlsx|Excel File 97~2003 (*.xls)|*.xls|All Files (*.*)|*.*";
+            ofd.Filter = "Excel File 97~2003 (*.xls)|*.xls|Excel File (*.xlsx)|*.xlsx|All Files (*.*)|*.*";
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
@@ -141,8 +135,7 @@ namespace KES_1_for_LAN
                     }
                     xlWorkbook.Close(true);
                     xlApp.Quit();
-                    //dataGridView1.DataSource = dt;
-
+                   
                 }
 
                 catch (Exception ex)
@@ -156,12 +149,8 @@ namespace KES_1_for_LAN
                     ReleaseExcelObject(xlWorkbook);
                     ReleaseExcelObject(xlApp);
                 }
-            }                                       
-            //Robot_Status();
-            //string sstr =Form1.stat_all;
-            Console.WriteLine("gksrnrfgslw" + lan_read2);
-           // Sndmsg_Lan("$SetMotorsOn,1");
-
+            }                                     
+           
         }
 
         private void ReleaseExcelObject(object obj)
@@ -301,7 +290,7 @@ namespace KES_1_for_LAN
         stat_loop:
             Sndmsg_Lan("$Execute,\"Where\"");
             //Thread.Sleep(50);
-            Console.WriteLine("[!!] !!: " + lan_read2);
+            //Console.WriteLine("[!!] !!: " + lan_read2);
 
             if (lan_read2.Length > 16)
             {
@@ -311,19 +300,19 @@ namespace KES_1_for_LAN
                     string world = lan_read2.Substring(20, 9);
                     
                     x_axis = double.Parse(world);
-                    Console.WriteLine("x======:" + world);
+                    //Console.WriteLine("x======:" + world);
                      world = lan_read2.Substring(36, 9);
                     
                     y_axis = double.Parse(world);
-                    Console.WriteLine("y======:" + world);
+                    //Console.WriteLine("y======:" + world);
                      world = lan_read2.Substring(52, 9);
                     
                     z_axis = double.Parse(world);
-                    Console.WriteLine("z======:" + world);
+                    //Console.WriteLine("z======:" + world);
                      world = lan_read2.Substring(68, 9);
                     
                     u_axis = double.Parse(world);
-                    Console.WriteLine("u======:" + world);
+                    //Console.WriteLine("u======:" + world);
 
                     if (this.txtBox_x.InvokeRequired)
                     {
@@ -473,7 +462,7 @@ namespace KES_1_for_LAN
                     y_axis = y_axis - double.Parse(user_pitch_txt.Text);
                 }
 
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -505,7 +494,7 @@ namespace KES_1_for_LAN
                 {
                     y_axis = y_axis + double.Parse(user_pitch_txt.Text);
                 }
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -537,7 +526,7 @@ namespace KES_1_for_LAN
                 {
                     x_axis = x_axis - double.Parse(user_pitch_txt.Text);
                 }
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -569,7 +558,7 @@ namespace KES_1_for_LAN
                 {
                     x_axis = x_axis + double.Parse(user_pitch_txt.Text);
                 }
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -607,7 +596,7 @@ namespace KES_1_for_LAN
                 if (z_axis < -150)
                     z_axis = -149.9;
 
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -644,7 +633,7 @@ namespace KES_1_for_LAN
                 if (z_axis < -150)
                     z_axis = -149.9;
 
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -681,7 +670,7 @@ namespace KES_1_for_LAN
                 if (u_axis < -360)
                     u_axis = -359.9;
 
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -719,7 +708,7 @@ namespace KES_1_for_LAN
                 if (u_axis < -360)
                     u_axis = -359.9;
 
-                Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
+                //Console.WriteLine("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 Sndmsg_Lan("$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"");
                 //Robot_Status();
             }
@@ -1029,5 +1018,12 @@ namespace KES_1_for_LAN
             string ecmd = "$execute,\"Off 6\"";
             Sndmsg_Lan(ecmd);
                     }
+
+        private void btn_jpp0_Click(object sender, EventArgs e)
+        {
+            
+            Sndmsg_Lan("$execute,\"Jump P0\"");
+                       
+        }
     }
 }
