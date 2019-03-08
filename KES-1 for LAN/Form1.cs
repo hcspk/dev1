@@ -1168,7 +1168,7 @@ namespace KES_1_for_LAN
                     z_axis = ds.Tables[0].Rows[i]["Z"].ToString();
                     u_axis = ds.Tables[0].Rows[i]["U"].ToString();
 
-                    Thread.Sleep(500);
+                    Thread.Sleep(200);
 
                     ecmd = "$execute,\"Jump P0 C0\"";
                     Sendmsg_Lan(ecmd);
@@ -1214,7 +1214,7 @@ namespace KES_1_for_LAN
                     if (rob_stat != "norm" || task != "norm")
                     { break; }
 
-                    ecmd = "$execute,\"Move P0 -Z(4)\"";
+                    ecmd = "$execute,\"Move P0 -Z(4.5)\"";
                     Sendmsg_Lan(ecmd);
                     send_N_check(50);
                     //Thread.Sleep(100);
@@ -1250,7 +1250,7 @@ namespace KES_1_for_LAN
                     {
                         if (listBox.Items[0].ToString() != "나사를 흡착하지 못했습니다." && loop_cnt > 5)
                         { insert_listbox1("나사를 흡착하지 못했습니다."); }
-                        Thread.Sleep(100);
+                        Thread.Sleep(50);
 
                         while (rob_stat == "pause") { }
                         if (rob_stat != "norm" || task != "norm")
@@ -1283,7 +1283,7 @@ namespace KES_1_for_LAN
                     {
                         if (listBox.Items[0].ToString() != "이동 중 나사가 이탈하였습니다." && loop_cnt > 5)
                         { insert_listbox1("이동 중 나사가 이탈하였습니다."); }
-                        Thread.Sleep(100);
+                        Thread.Sleep(50);
 
                         while (rob_stat == "pause") { }
                         if (rob_stat != "norm" || task != "norm")
@@ -1391,9 +1391,9 @@ namespace KES_1_for_LAN
                     if (rob_stat != "norm" || task != "norm")
                     { break; }
 
-                    ecmd = "$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"";
-                    Sendmsg_Lan(ecmd);
-                    send_N_check(200);
+                    ////ecmd = "$execute,\"Move xy(" + x_axis + ", " + y_axis + ", " + z_axis + ", " + u_axis + ")\"";
+                    ////Sendmsg_Lan(ecmd);
+                    ////send_N_check(200);
 
                     if (judge == "NG")
                     {

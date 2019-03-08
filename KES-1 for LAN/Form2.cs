@@ -292,7 +292,7 @@ namespace KES_1_for_LAN
             //Thread.Sleep(50);
             //Console.WriteLine("[!!] !!: " + lan_read2);
 
-            if (lan_read2.Length > 16)
+            if (lan_read2.Length > 77)
             {
 
                 if (lan_read2.Substring(10, 5) == "WORLD")
